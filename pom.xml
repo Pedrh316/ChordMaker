@@ -9,6 +9,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>20</maven.compiler.source>
         <maven.compiler.target>20</maven.compiler.target>
-        <exec.mainClass>com.mycompany.chordmaker.ChordMaker</exec.mainClass>
+        <exec.mainClass>com.mycompany.chordmaker.Main</exec.mainClass>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.7</version>
+        </dependency>
+    </dependencies>
+        
 </project>

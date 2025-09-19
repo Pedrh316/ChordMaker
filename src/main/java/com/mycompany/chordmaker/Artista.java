@@ -1,5 +1,6 @@
 package com.mycompany.chordmaker;
 
+import com.mycompany.chordmaker.auth.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 
