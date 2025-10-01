@@ -1,5 +1,6 @@
-package com.mycompany.chordmaker;
+package Controller;
 
+import Model.Musica;
 import java.util.LinkedList;
 import java.util.List;
 

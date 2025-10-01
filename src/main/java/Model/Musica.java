@@ -1,5 +1,5 @@
 
-package com.mycompany.chordmaker;
+package Model;
 
 public class Musica {
     private String titulo;
