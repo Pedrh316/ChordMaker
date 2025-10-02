@@ -1,6 +1,5 @@
 package Model;
 
-import Model.Album;
 import java.util.ArrayList;
 import java.util.List;
 
