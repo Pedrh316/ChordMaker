@@ -22,8 +22,4 @@ public class Musica {
 
     public String getArquivoAudio() { return arquivoAudio; }
     public void setArquivoAudio(String arquivoAudio) { this.arquivoAudio = arquivoAudio; }
-
-    public void play() {}
-    public void pause() {}
-    public void stop() {}
 }
