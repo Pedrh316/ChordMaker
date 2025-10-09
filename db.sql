@@ -13,8 +13,58 @@ CREATE DATABASE testdb
     CONNECTION LIMIT = -1
     IS_TEMPLATE = False;
 
-CREATE TABLE IF NOT EXISTS users (
-	username TEXT PRIMARY KEY,
-	password TEXT NOT NULL,
-	email TEXT UNIQUE
+-- Tabela unificada de usuários e artistas
+CREATE TABLE usuario (
+    id SERIAL PRIMARY KEY,
+    nome TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    senha TEXT NOT NULL,
+
+    is_artista BOOLEAN NOT NULL DEFAULT FALSE,
+
+    -- nulo se não for artista
+    biografia TEXT,
+    genero TEXT
+);
+
+-- Tabela de álbuns
+CREATE TABLE album (
+    id SERIAL PRIMARY KEY,
+    titulo TEXT NOT NULL,
+    data_lancamento DATE,
+    arquivo_capa TEXT,
+    descricao TEXT,
+    artista_id INT NOT NULL,
+    FOREIGN KEY (artista_id) REFERENCES usuario(id) ON DELETE CASCADE
+);
+
+-- Tabela de músicas
+CREATE TABLE musica (
+    id SERIAL PRIMARY KEY,
+    titulo TEXT NOT NULL,
+    duracao INT,
+    genero TEXT,
+    data_lancamento DATE,
+    faixa BYTEA,
+    album_id INT NOT NULL,
+    artista_id INT NOT NULL,
+    FOREIGN KEY (album_id) REFERENCES album(id) ON DELETE CASCADE,
+    FOREIGN KEY (artista_id) REFERENCES usuario(id) ON DELETE CASCADE
+);
+
+-- Tabela de playlists
+CREATE TABLE playlist (
+    id SERIAL PRIMARY KEY,
+    nome TEXT NOT NULL,
+    usuario_id INT NOT NULL,
+    FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE CASCADE
+);
+
+-- Tabela associativa entre playlists e músicas
+CREATE TABLE playlist_musica (
+    playlist_id INT NOT NULL,
+    musica_id INT NOT NULL,
+    PRIMARY KEY (playlist_id, musica_id),
+    FOREIGN KEY (playlist_id) REFERENCES playlist(id) ON DELETE CASCADE,
+    FOREIGN KEY (musica_id) REFERENCES musica(id) ON DELETE CASCADE
 );

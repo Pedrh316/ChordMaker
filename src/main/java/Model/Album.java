@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Album {
-
     private String titulo;
     private int dataLancamento;
     private String arquivoCapa;
     private String descricao;
     private final List<Musica> musicasAlbum = new ArrayList();
+    private Artista artistaAlbum;
 
     public void addMusicaAlbum(Musica musica) {
         musicasAlbum.add(musica);
@@ -50,4 +50,14 @@ public class Album {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
+    public Artista getArtistaAlbum() {
+        return artistaAlbum;
+    }
+
+    public void setArtistaAlbum(Artista artistaAlbum) {
+        this.artistaAlbum = artistaAlbum;
+    }
+    
+    
 }

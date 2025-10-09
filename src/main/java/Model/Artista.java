@@ -10,6 +10,13 @@ public class Artista extends Usuario {
     private final List<Musica> musicasArtista = new ArrayList();
     private final List<Album> albumsArtista = new ArrayList();
 
+    public Artista(String biografia, String genero, String nome, String email, String senha) {
+        super(nome, email, senha);
+        this.biografia = biografia;
+        this.genero = genero;
+    }
+    
+
     public List<Musica> listarMusica() {
         return musicasArtista;
     }

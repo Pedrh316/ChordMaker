@@ -13,7 +13,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class LoginView extends JFrame {
-    private JTextField campoUsuario;
+    private JTextField campoEmail;
     private JPasswordField campoSenha;
     private JButton botaoLogin;
     private JButton botaoRegistrar;
@@ -31,7 +31,7 @@ public class LoginView extends JFrame {
 
 
     private void construirInterface() {
-        campoUsuario = new JTextField(20);
+        campoEmail = new JTextField(20);
         campoSenha = new JPasswordField(20);
         botaoLogin = new JButton("Login");
         botaoRegistrar = new JButton("Registrar");
@@ -44,9 +44,9 @@ public class LoginView extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 0; 
-        panel.add(new JLabel("Usuario:"), gbc);
+        panel.add(new JLabel("Email:"), gbc);
         gbc.gridx = 1; 
-        panel.add(campoUsuario, gbc);
+        panel.add(campoEmail, gbc);
 
 
         gbc.gridx = 0;
@@ -67,8 +67,8 @@ public class LoginView extends JFrame {
     }
 
 
-    public String getUsuario() {
-        return campoUsuario.getText().trim();
+    public String getEmail() {
+        return campoEmail.getText().trim();
     }
 
 

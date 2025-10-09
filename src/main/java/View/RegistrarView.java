@@ -12,7 +12,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class RegistrarView extends JFrame {
-    private JTextField campoUsuario;
+    private JTextField campoNome;
     private JPasswordField campoSenha;
     private JTextField campoEmail;
     private JButton botaoRegistrar;
@@ -30,7 +30,7 @@ public class RegistrarView extends JFrame {
 
 
     private void construirInterface() {
-        campoUsuario = new JTextField(20);
+        campoNome = new JTextField(20);
         campoSenha = new JPasswordField(20);
         botaoRegistrar = new JButton("Registrar");
         campoEmail = new JTextField(20);
@@ -43,14 +43,14 @@ public class RegistrarView extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panel.add(new JLabel("Username:"), gbc);
+        panel.add(new JLabel("Nome:"), gbc);
         gbc.gridx = 1; 
-        panel.add(campoUsuario, gbc);
+        panel.add(campoNome, gbc);
 
 
         gbc.gridx = 0; 
         gbc.gridy = 1; 
-        panel.add(new JLabel("Password:"), gbc);
+        panel.add(new JLabel("Senha:"), gbc);
         gbc.gridx = 1; 
         panel.add(campoSenha, gbc);
         
@@ -73,8 +73,8 @@ public class RegistrarView extends JFrame {
     }
 
 
-    public String getUsuario() {
-        return campoUsuario.getText().trim();
+    public String getNome() {
+        return campoNome.getText().trim();
     }
 
 
