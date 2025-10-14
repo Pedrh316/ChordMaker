@@ -15,6 +15,10 @@ public class Artista extends Usuario {
         this.biografia = biografia;
         this.genero = genero;
     }
+
+    public Artista(String nome) {
+        super(nome);
+    }
     
 
     public List<Musica> listarMusica() {

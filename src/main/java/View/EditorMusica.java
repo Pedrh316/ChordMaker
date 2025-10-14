@@ -1,20 +1,103 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package View;
 
-/**
- *
- * @author Aluno
- */
-public class EditorMusica extends javax.swing.JFrame {
+import java.awt.event.ActionListener;
+import javax.sound.midi.MetaMessage;
+import javax.sound.midi.MidiMessage;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.ShortMessage;
+import javax.sound.midi.SysexMessage;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.event.DocumentListener;
+
+public class EditorMusica extends JFrame {
 
     /**
      * Creates new form EditorMusica
      */
     public EditorMusica() {
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         initComponents();
+
+    }
+
+    public void setMusicaNome(String musicaNome) {
+        jTextField_nomeMusica.setText(musicaNome);
+    }
+
+    public void setMusicaNomeDocumentListener(DocumentListener a) {
+        jTextField_nomeMusica.getDocument().addDocumentListener(a);
+    }
+
+    public void setArtistaNome(String artistaNome) {
+        jLabel_nomeArtista.setText(artistaNome);
+    }
+
+    public void setBotaoPlay(ActionListener a) {
+        jButton_play.addActionListener(a);
+    }
+    
+    public void setBotaoStop(ActionListener a) {
+        jButton_stop.addActionListener(a);
+    }
+
+    private String nomeNota(int noteNumber) {
+        String[] notas = {
+            "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
+        };
+
+        int oitava = (noteNumber / 12) - 1;
+        String nota = notas[noteNumber % 12];
+
+        return nota + oitava;
+    }
+
+    private String descricaoMensagem(MidiMessage msg) {
+        if (msg instanceof ShortMessage s_msg) {
+            int cmd = s_msg.getCommand();
+            int canal = s_msg.getChannel();
+            int data1 = s_msg.getData1();
+            int data2 = s_msg.getData2();
+
+            return switch (cmd) {
+                case ShortMessage.NOTE_ON ->
+                    "NOTE ON - Ch: " + canal + " Nota: " + nomeNota(data1) + " Velocidade: " + data2;
+                case ShortMessage.NOTE_OFF ->
+                    "NOTE OFF - Ch: " + canal + " Nota: " + nomeNota(data1) + " Velocidade: " + data2;
+                default -> null;
+            };
+        }
+        
+        return null;
+    }
+
+    public void setSequence(Sequence sequence) {
+        var tracks = sequence.getTracks();
+
+        for (int i = 0; i < tracks.length; i++) {
+            var track = tracks[i];
+            var textArea = new JTextArea();
+            textArea.setEditable(false);
+
+            var stringB = new StringBuilder();
+
+            for (int j = 0; j < track.size(); j++) {
+                var event = track.get(j);
+                var msg = event.getMessage();
+                var desc = descricaoMensagem(msg);
+                
+                if (desc == null) continue;
+
+                stringB.append(String.format("Tick: %-6d | %s\n", event.getTick(), desc));
+            }
+
+            textArea.setText(stringB.toString());
+
+            var scroll = new JScrollPane(textArea);
+            jTabbedPane_chords.add("Track #" + i, scroll);
+        }
     }
 
     /**
@@ -26,17 +109,53 @@ public class EditorMusica extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel_nomeArtista = new javax.swing.JLabel();
+        jTextField_nomeMusica = new javax.swing.JTextField();
+        jTabbedPane_chords = new javax.swing.JTabbedPane();
+        jButton_play = new javax.swing.JButton();
+        jButton_stop = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel_nomeArtista.setText("jLabel2");
+
+        jTextField_nomeMusica.setText("jTextField1");
+
+        jButton_play.setText("▶");
+
+        jButton_stop.setText("⏹");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField_nomeMusica, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                    .addComponent(jLabel_nomeArtista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTabbedPane_chords, javax.swing.GroupLayout.PREFERRED_SIZE, 697, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton_stop, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton_play, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTextField_nomeMusica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel_nomeArtista))
+                    .addComponent(jTabbedPane_chords, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton_play, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                    .addComponent(jButton_stop, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
+                .addGap(0, 70, Short.MAX_VALUE))
         );
 
         pack();
@@ -78,5 +197,10 @@ public class EditorMusica extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton_play;
+    private javax.swing.JButton jButton_stop;
+    private javax.swing.JLabel jLabel_nomeArtista;
+    private javax.swing.JTabbedPane jTabbedPane_chords;
+    private javax.swing.JTextField jTextField_nomeMusica;
     // End of variables declaration//GEN-END:variables
 }

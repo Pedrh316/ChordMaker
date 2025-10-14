@@ -4,13 +4,19 @@ import java.util.Date;
 import javax.sound.midi.Sequence;
 
 public class Musica {
+
     private Sequence faixa;
     private String titulo;
-    private int duracao;
+    private long duracao;
     private String genero;
     private Date dataLancamento;
     private Album album;
     private Artista artista;
+
+    public Musica(Artista artista, Sequence faixa) {
+        this.artista = artista;
+        this.faixa = faixa;
+    }
 
     public String getTitulo() {
         return titulo;
@@ -20,11 +26,11 @@ public class Musica {
         this.titulo = titulo;
     }
 
-    public int getDuracao() {
+    public long getDuracao() {
         return duracao;
     }
 
-    public void setDuracao(int duracao) {
+    public void setDuracao(long duracao) {
         this.duracao = duracao;
     }
 
@@ -68,5 +74,4 @@ public class Musica {
         this.faixa = faixa;
     }
 
-    
 }

@@ -11,6 +11,10 @@ public class Album {
     private final List<Musica> musicasAlbum = new ArrayList();
     private Artista artistaAlbum;
 
+    public Album(String titulo) {
+        this.titulo = titulo;
+    }
+
     public void addMusicaAlbum(Musica musica) {
         musicasAlbum.add(musica);
     }
