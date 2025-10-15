@@ -1,7 +1,13 @@
 package View;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;
+import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
@@ -9,9 +15,13 @@ import javax.sound.midi.SysexMessage;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JViewport;
+import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public class EditorMusica extends JFrame {
+
+    private List<JTextArea> jTextArea_tracks = new ArrayList<>();
 
     /**
      * Creates new form EditorMusica
@@ -38,9 +48,37 @@ public class EditorMusica extends JFrame {
     public void setBotaoPlay(ActionListener a) {
         jButton_play.addActionListener(a);
     }
-    
+
     public void setBotaoStop(ActionListener a) {
         jButton_stop.addActionListener(a);
+    }
+
+    public void setAbaTrack(DocumentListener a) {
+        for (var trackArea : jTextArea_tracks) {
+            trackArea.getDocument().addDocumentListener(a);
+        }
+    }
+
+    public int getContagemTabs() {
+        return jTabbedPane_chords.getTabCount();
+    }
+
+    private JTextArea getAreaTexto(int i) {
+        var scroll = (JScrollPane) jTabbedPane_chords.getComponentAt(i);
+
+        return (JTextArea) scroll.getViewport().getView();
+    }
+
+    public String getTextoTrack(int i) {
+        var areaTexto = getAreaTexto(i);
+
+        return areaTexto.getText();
+    }
+
+    public void setTextoTrack(int i, String texto) {
+        var areaTexto = getAreaTexto(i);
+
+        areaTexto.setText(texto);
     }
 
     private String nomeNota(int noteNumber) {
@@ -66,20 +104,25 @@ public class EditorMusica extends JFrame {
                     "NOTE ON - Ch: " + canal + " Nota: " + nomeNota(data1) + " Velocidade: " + data2;
                 case ShortMessage.NOTE_OFF ->
                     "NOTE OFF - Ch: " + canal + " Nota: " + nomeNota(data1) + " Velocidade: " + data2;
-                default -> null;
+                default ->
+                    null;
             };
         }
-        
+
         return null;
     }
 
     public void setSequence(Sequence sequence) {
+        // Limpar tabs antigas
+        jTabbedPane_chords.removeAll();
+        jTextArea_tracks.clear();
+
         var tracks = sequence.getTracks();
 
         for (int i = 0; i < tracks.length; i++) {
             var track = tracks[i];
             var textArea = new JTextArea();
-            textArea.setEditable(false);
+            textArea.setEditable(true);
 
             var stringB = new StringBuilder();
 
@@ -87,17 +130,25 @@ public class EditorMusica extends JFrame {
                 var event = track.get(j);
                 var msg = event.getMessage();
                 var desc = descricaoMensagem(msg);
-                
-                if (desc == null) continue;
+
+                if (desc == null) {
+                    continue;
+                }
 
                 stringB.append(String.format("Tick: %-6d | %s\n", event.getTick(), desc));
             }
 
             textArea.setText(stringB.toString());
+            jTextArea_tracks.add(textArea);
 
             var scroll = new JScrollPane(textArea);
             jTabbedPane_chords.add("Track #" + i, scroll);
         }
+    }
+    
+    public void setTrackCor(int i, Color cor) {
+        var areaTexto = getAreaTexto(i);
+        areaTexto.setBackground(cor);
     }
 
     /**

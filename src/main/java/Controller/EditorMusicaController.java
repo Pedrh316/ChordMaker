@@ -1,7 +1,9 @@
 package Controller;
 
+import ChordMaker.EditorUtil;
 import Model.Musica;
 import View.EditorMusica;
+import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.sound.midi.InvalidMidiDataException;
@@ -65,9 +67,37 @@ public class EditorMusicaController {
         view.setBotaoPlay(e -> {
             new Thread(() -> {
                 try {
+                    var seq = new Sequence(Sequence.PPQ, 480);
+                    
+                    for (int i = 0; i < view.getContagemTabs(); i++) {
+                        var texto = view.getTextoTrack(i);
+                        
+                        try {
+                            var parseado = EditorUtil.textoParaSequence(texto);
+                            if (parseado == null) {
+                                throw new InvalidMidiDataException();
+                            }
+                            
+                            var trackParseado = parseado.getTracks()[0];
+                            var nTrack = seq.createTrack();
+                            
+                            for (int j = 0; j < trackParseado.size(); j++) {
+                                nTrack.add(trackParseado.get(j));
+                            }
+                            
+                            view.setTrackCor(i, Color.WHITE);
+                        } catch (InvalidMidiDataException ex) {
+                            view.setTrackCor(i, Color.RED);
+                            return;
+                        }
+                    }
+                    
+                    model.setFaixa(seq);
+                    
                     if (sequencer.isRunning()) {
                         sequencer.stop();
                     }
+                    
                     sequencer.setSequence(model.getFaixa());
                     sequencer.setTickPosition(0);
                     sequencer.start();
@@ -77,13 +107,13 @@ public class EditorMusicaController {
 
             }).start();
         });
-        
+
         view.setBotaoStop(e -> {
             if (sequencer.isRunning()) {
                 sequencer.stop();
             }
         });
-        
+
         view.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
