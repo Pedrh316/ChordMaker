@@ -67,37 +67,18 @@ public class EditorMusicaController {
         view.setBotaoPlay(e -> {
             new Thread(() -> {
                 try {
-                    var seq = new Sequence(Sequence.PPQ, 480);
+                    var seq = parsearNotas();
                     
-                    for (int i = 0; i < view.getContagemTabs(); i++) {
-                        var texto = view.getTextoTrack(i);
-                        
-                        try {
-                            var parseado = EditorUtil.textoParaSequence(texto);
-                            if (parseado == null) {
-                                throw new InvalidMidiDataException();
-                            }
-                            
-                            var trackParseado = parseado.getTracks()[0];
-                            var nTrack = seq.createTrack();
-                            
-                            for (int j = 0; j < trackParseado.size(); j++) {
-                                nTrack.add(trackParseado.get(j));
-                            }
-                            
-                            view.setTrackCor(i, Color.WHITE);
-                        } catch (InvalidMidiDataException ex) {
-                            view.setTrackCor(i, Color.RED);
-                            return;
-                        }
+                    if (seq == null) {
+                        return;
                     }
-                    
+
                     model.setFaixa(seq);
-                    
+
                     if (sequencer.isRunning()) {
                         sequencer.stop();
                     }
-                    
+
                     sequencer.setSequence(model.getFaixa());
                     sequencer.setTickPosition(0);
                     sequencer.start();
@@ -113,6 +94,21 @@ public class EditorMusicaController {
                 sequencer.stop();
             }
         });
+        
+        view.setBotaoSalvar(e -> {
+            try {
+                var seq = parsearNotas();
+                
+                if (seq == null) {
+                    return;
+                }
+                
+                model.setFaixa(seq);
+                model.salvar();
+            } catch (InvalidMidiDataException ex) {
+                System.getLogger(EditorMusicaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        });
 
         view.addWindowListener(new WindowAdapter() {
             @Override
@@ -123,5 +119,34 @@ public class EditorMusicaController {
         });
 
         view.setVisible(true);
+    }
+
+    public Sequence parsearNotas() throws InvalidMidiDataException {
+        var seq = new Sequence(Sequence.PPQ, 480);
+
+        for (int i = 0; i < view.getContagemTabs(); i++) {
+            var texto = view.getTextoTrack(i);
+
+            try {
+                var parseado = EditorUtil.textoParaSequence(texto);
+                if (parseado == null) {
+                    throw new InvalidMidiDataException();
+                }
+
+                var trackParseado = parseado.getTracks()[0];
+                var nTrack = seq.createTrack();
+
+                for (int j = 0; j < trackParseado.size(); j++) {
+                    nTrack.add(trackParseado.get(j));
+                }
+
+                view.setTrackCor(i, Color.WHITE);
+            } catch (InvalidMidiDataException ex) {
+                view.setTrackCor(i, Color.RED);
+                return null;
+            }
+        }
+        
+        return seq;
     }
 }

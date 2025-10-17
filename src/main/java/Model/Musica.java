@@ -73,5 +73,9 @@ public class Musica {
     public void setFaixa(Sequence faixa) {
         this.faixa = faixa;
     }
+    
+    public void salvar() {
+        
+    }
 
 }
