@@ -7,15 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Auth {
+
     /* Dados obtidos do formulário de login ou registro */
     private String email;
     private String senha;
     private String nome;
-    
+
     /* 
      *   Getters e Setters 
-    */
-    
+     */
     public String getEmail() {
         return email;
     }
@@ -39,8 +39,7 @@ public class Auth {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    
-    
+
     public Usuario login() {
         // TODO: não armazenar senha em plain text
         // String sql = "SELECT password_hash, salt FROM users WHERE username = ?";
@@ -55,24 +54,24 @@ public class Auth {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     Usuario u;
-                    
+
                     if (rs.getBoolean("is_artista")) {
                         u = new Artista(
                                 rs.getString("biografia"),
                                 rs.getString("genero"),
+                                rs.getInt("id"),
                                 rs.getString("nome"),
                                 rs.getString("email"),
                                 rs.getString("senha")
                         );
                     } else {
                         u = new Usuario(
+                                rs.getInt("id"),
                                 rs.getString("nome"),
                                 rs.getString("email"),
                                 rs.getString("senha")
                         );
                     }
-                    
-                    
 
                     return u;
                 }
@@ -84,7 +83,7 @@ public class Auth {
         return null;
     }
 
-    public Usuario registrar() {
+    public boolean registrar() {
         String sql = "INSERT INTO usuario (nome, senha, email) VALUES (?, ?, ?)";
 
         try (Connection conn = DBUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -93,13 +92,12 @@ public class Auth {
             ps.setString(3, email);
 
             ps.executeUpdate();
-            
-            return new Usuario(nome, email, senha);
-            
+
+            return true;
         } catch (SQLException ex) {
             System.getLogger(Usuario.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
 
-        return null;
+        return false;
     }
 }

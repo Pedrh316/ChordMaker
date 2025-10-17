@@ -16,11 +16,10 @@ public class AuthController {
     private Usuario usuarioLogado;
 
     //private Usuario usuarioModel;
-    public AuthController() {
-        authModel = new Auth();
-        
-        loginView = new LoginView();
-        registrarView = new RegistrarView();
+    public AuthController(Auth model, LoginView loginView, RegistrarView registrarView) {
+        this.authModel = model;
+        this.loginView = loginView;
+        this.registrarView = registrarView;
 
         loginView.setAcaoLogin(e -> login());
         loginView.setAcaoRegistrar(e -> abrirRegistro());
@@ -76,14 +75,14 @@ public class AuthController {
         authModel.setSenha(registrarView.getSenha());
         authModel.setEmail(registrarView.getEmail());
         
-        Usuario u = authModel.registrar();
+        var registrou = authModel.registrar();
         
-        if (u != null) {
+        if (registrou) {
             JOptionPane.showMessageDialog(
                 registrarView, "Usuário registrado com sucesso"
             );
-            usuarioLogado = u;
-            registrarView.dispose();
+            
+            abrirLogin();
         } else {
             JOptionPane.showMessageDialog(
                 registrarView, "Registro falhou"
