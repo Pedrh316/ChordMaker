@@ -3,6 +3,9 @@ package View;
 import Model.Biblioteca;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.Sequencer;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -17,15 +20,32 @@ public class BibliotecaView extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         initComponents();
-        
+
         jScrollPane_biblioteca.getVerticalScrollBar().setUnitIncrement(16);
     }
-    
+
     public void setNome(Biblioteca b) {
         jLabel_bibliotecaTitulo.setText("Biblioteca de " + b.getUsuario().getNome());
     }
 
-    public void atualizarLista(Biblioteca b) {
+    public void setBotaoAdicionar(ActionListener l) {
+        jButton_adicionar.addActionListener(l);
+    }
+
+    public void setBotaoStop(ActionListener l) {
+        jButton_stop.addActionListener(l);
+    }
+
+    public void setTocandoAgora(String tocandoAgora) {
+        if (tocandoAgora == null || tocandoAgora.isEmpty()) {
+            jLabel_tocandoAgora.setText("Nada tocando agora");
+        } else {
+            jLabel_tocandoAgora.setText("Tocando agora: " + tocandoAgora);
+        }
+        
+    }
+
+    public void atualizarLista(Biblioteca b, ActionListener musicaListener) {
         jPanel_biblioteca.removeAll();
         jPanel_biblioteca.setLayout(new BoxLayout(jPanel_biblioteca, BoxLayout.Y_AXIS));
 
@@ -37,25 +57,27 @@ public class BibliotecaView extends javax.swing.JFrame {
             var botaoMusica = new JButton(musica.getArtista().getNome() + " - " + musica.getTitulo());
             botaoMusica.setAlignmentX(Component.LEFT_ALIGNMENT);
             botaoMusica.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-            //botaoMusica.addActionListener();
+            botaoMusica.setActionCommand(Integer.toString(musica.getId()));
+            botaoMusica.addActionListener(musicaListener);
 
             linha.add(botaoMusica);
             linha.add(Box.createHorizontalStrut(10));
+
             if (b.getUsuario().equals(musica.getArtista())) {
                 var botaoEditar = new JButton("Editar");
                 botaoEditar.setPreferredSize(new Dimension(100, 40));
                 botaoEditar.setMaximumSize(new Dimension(100, 40));
                 //botaoEditar.addActionListener();
-                
+
                 linha.add(botaoEditar);
             } else {
                 var placeholder = Box.createRigidArea(new Dimension(100, 40));
-                
+
                 linha.add(placeholder);
             }
 
             jPanel_biblioteca.add(linha);
-            jPanel_biblioteca.add(Box.createVerticalStrut(5)); // espaçamento entre botões
+            jPanel_biblioteca.add(Box.createVerticalStrut(5));
         }
 
         jPanel_biblioteca.revalidate();
@@ -75,6 +97,8 @@ public class BibliotecaView extends javax.swing.JFrame {
         jPanel_biblioteca = new javax.swing.JPanel();
         jButton_adicionar = new javax.swing.JButton();
         jLabel_bibliotecaTitulo = new javax.swing.JLabel();
+        jButton_stop = new javax.swing.JButton();
+        jLabel_tocandoAgora = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(900, 600));
@@ -97,6 +121,11 @@ public class BibliotecaView extends javax.swing.JFrame {
         jLabel_bibliotecaTitulo.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel_bibliotecaTitulo.setText("Biblioteca");
 
+        jButton_stop.setText("⏹");
+
+        jLabel_tocandoAgora.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jLabel_tocandoAgora.setText("Tocando agora:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -107,7 +136,10 @@ public class BibliotecaView extends javax.swing.JFrame {
                     .addComponent(jScrollPane_biblioteca, javax.swing.GroupLayout.DEFAULT_SIZE, 888, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton_adicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel_tocandoAgora, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton_stop, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel_bibliotecaTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -119,7 +151,10 @@ public class BibliotecaView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane_biblioteca, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton_adicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton_adicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_stop, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel_tocandoAgora, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -153,7 +188,9 @@ public class BibliotecaView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_adicionar;
+    private javax.swing.JButton jButton_stop;
     private javax.swing.JLabel jLabel_bibliotecaTitulo;
+    private javax.swing.JLabel jLabel_tocandoAgora;
     private javax.swing.JPanel jPanel_biblioteca;
     private javax.swing.JScrollPane jScrollPane_biblioteca;
     // End of variables declaration//GEN-END:variables

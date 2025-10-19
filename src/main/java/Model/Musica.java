@@ -5,6 +5,7 @@ import javax.sound.midi.Sequence;
 
 public class Musica {
 
+    private final int id;
     private Sequence faixa;
     private String titulo;
     private long duracao;
@@ -13,14 +14,17 @@ public class Musica {
     private Album album;
     private Artista artista;
 
-    public Musica(Artista artista, Sequence faixa) {
+    public Musica(int id, Artista artista, Sequence faixa) {
+        this.id = id;
         this.artista = artista;
         this.faixa = faixa;
     }
-    
-    public Musica(Artista artista, String titulo) {
+
+    public Musica(int id, Artista artista, String titulo, Sequence faixa) {
+        this.id = id;
         this.artista = artista;
         this.titulo = titulo;
+        this.faixa = faixa;
     }
 
     public String getTitulo() {
@@ -78,16 +82,18 @@ public class Musica {
     public void setFaixa(Sequence faixa) {
         this.faixa = faixa;
     }
-    
+
+    public int getId() {
+        return id;
+    }
+
     public void salvar() {
-        
+
     }
 
     @Override
     public String toString() {
         return String.format("%20s\t%20s", titulo, artista.getNome());
     }
-    
-    
 
 }
