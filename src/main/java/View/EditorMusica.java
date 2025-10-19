@@ -1,22 +1,15 @@
 package View;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MetaMessage;
-import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
-import javax.sound.midi.SysexMessage;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JViewport;
-import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public class EditorMusica extends JFrame {
@@ -172,6 +165,7 @@ public class EditorMusica extends JFrame {
         jButton_salvar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(900, 600));
 
         jLabel_nomeArtista.setText("jLabel2");
 

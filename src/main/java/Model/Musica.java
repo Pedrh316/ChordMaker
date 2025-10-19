@@ -17,6 +17,11 @@ public class Musica {
         this.artista = artista;
         this.faixa = faixa;
     }
+    
+    public Musica(Artista artista, String titulo) {
+        this.artista = artista;
+        this.titulo = titulo;
+    }
 
     public String getTitulo() {
         return titulo;
@@ -77,5 +82,12 @@ public class Musica {
     public void salvar() {
         
     }
+
+    @Override
+    public String toString() {
+        return String.format("%20s\t%20s", titulo, artista.getNome());
+    }
+    
+    
 
 }

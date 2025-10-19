@@ -16,29 +16,25 @@ public class Artista extends Usuario {
         this.genero = genero;
     }
 
-    public Artista(String nome) {
-        super(nome);
+    public Artista(int id, String nome) {
+        super(id, nome);
     }
-    
 
     public List<Musica> listarMusica() {
         return musicasArtista;
     }
-    
+
     public void addMusica(Musica musica) {
         musicasArtista.add(musica);
     }
-    
 
     public List<Album> listarAlbum() {
         return albumsArtista;
     }
-    
+
     public void addAlbum(Album album) {
         albumsArtista.add(album);
     }
-    
-    
 
     public String getBiografia() {
         return biografia;
@@ -63,4 +59,5 @@ public class Artista extends Usuario {
     public void editarMusica() {
         // chord maker
     }
+
 }

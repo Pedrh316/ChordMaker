@@ -1,15 +1,14 @@
 package Model;
 
 import ChordMaker.DBUtil;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Usuario {
 
-    private int id;
+    private final int id;
     private String nome;
     private String email;
     private String senha;
@@ -22,7 +21,8 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public Usuario(String nome) {
+    public Usuario(int id, String nome) {
+        this.id = id;
         this.nome = nome;
     }
 
@@ -52,10 +52,6 @@ public class Usuario {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void criarPlaylist(String nomePlaylist, List<Musica> musicas) {
@@ -94,10 +90,37 @@ public class Usuario {
         try {
             var connection = DBUtil.getConnection();
             var st = connection.createStatement();
-            
+
             st.execute(sql);
         } catch (SQLException ex) {
             System.getLogger(Usuario.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        
+        if (obj == null) {
+            return false;
+        }
+        
+        if (obj instanceof Usuario) {
+            final Usuario other = (Usuario) obj;
+            
+            return this.id == other.id;
+        }
+        
+        
+        return false;
+    }
+    
+    
 }
