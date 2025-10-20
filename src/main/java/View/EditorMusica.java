@@ -1,12 +1,11 @@
 package View;
 
+import ChordMaker.NotaUtil;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Sequence;
-import javax.sound.midi.ShortMessage;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -16,9 +15,6 @@ public class EditorMusica extends JFrame {
 
     private List<JTextArea> jTextArea_tracks = new ArrayList<>();
 
-    /**
-     * Creates new form EditorMusica
-     */
     public EditorMusica() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -45,7 +41,7 @@ public class EditorMusica extends JFrame {
     public void setBotaoStop(ActionListener a) {
         jButton_stop.addActionListener(a);
     }
-    
+
     public void setBotaoSalvar(ActionListener a) {
         jButton_salvar.addActionListener(a);
     }
@@ -54,6 +50,10 @@ public class EditorMusica extends JFrame {
         for (var trackArea : jTextArea_tracks) {
             trackArea.getDocument().addDocumentListener(a);
         }
+    }
+    
+    public void setBotaoRetorno(ActionListener a) {
+        jButton_retornar.addActionListener(a);
     }
 
     public int getContagemTabs() {
@@ -78,37 +78,6 @@ public class EditorMusica extends JFrame {
         areaTexto.setText(texto);
     }
 
-    private String nomeNota(int noteNumber) {
-        String[] notas = {
-            "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
-        };
-
-        int oitava = (noteNumber / 12) - 1;
-        String nota = notas[noteNumber % 12];
-
-        return nota + oitava;
-    }
-
-    private String descricaoMensagem(MidiMessage msg) {
-        if (msg instanceof ShortMessage s_msg) {
-            int cmd = s_msg.getCommand();
-            int canal = s_msg.getChannel();
-            int data1 = s_msg.getData1();
-            int data2 = s_msg.getData2();
-
-            return switch (cmd) {
-                case ShortMessage.NOTE_ON ->
-                    "NOTE ON - Ch: " + canal + " Nota: " + nomeNota(data1) + " Velocidade: " + data2;
-                case ShortMessage.NOTE_OFF ->
-                    "NOTE OFF - Ch: " + canal + " Nota: " + nomeNota(data1) + " Velocidade: " + data2;
-                default ->
-                    null;
-            };
-        }
-
-        return null;
-    }
-
     public void setSequence(Sequence sequence) {
         // Limpar tabs antigas
         jTabbedPane_chords.removeAll();
@@ -126,7 +95,7 @@ public class EditorMusica extends JFrame {
             for (int j = 0; j < track.size(); j++) {
                 var event = track.get(j);
                 var msg = event.getMessage();
-                var desc = descricaoMensagem(msg);
+                var desc = NotaUtil.descricaoMensagem(msg);
 
                 if (desc == null) {
                     continue;
@@ -142,7 +111,7 @@ public class EditorMusica extends JFrame {
             jTabbedPane_chords.add("Track #" + i, scroll);
         }
     }
-    
+
     public void setTrackCor(int i, Color cor) {
         var areaTexto = getAreaTexto(i);
         areaTexto.setBackground(cor);
@@ -163,13 +132,14 @@ public class EditorMusica extends JFrame {
         jButton_play = new javax.swing.JButton();
         jButton_stop = new javax.swing.JButton();
         jButton_salvar = new javax.swing.JButton();
+        jButton_retornar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(900, 600));
 
-        jLabel_nomeArtista.setText("jLabel2");
+        jLabel_nomeArtista.setText("Artista");
 
-        jTextField_nomeMusica.setText("jTextField1");
+        jTextField_nomeMusica.setText("Titulo");
 
         jButton_play.setText("▶");
 
@@ -177,34 +147,43 @@ public class EditorMusica extends JFrame {
 
         jButton_salvar.setText("💾");
 
+        jButton_retornar.setText("⬅");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField_nomeMusica, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
-                    .addComponent(jLabel_nomeArtista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jTextField_nomeMusica)
+                    .addComponent(jLabel_nomeArtista, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton_retornar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton_salvar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(510, 510, 510)
+                        .addGap(415, 415, 415)
                         .addComponent(jButton_stop, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton_play, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addComponent(jTabbedPane_chords, javax.swing.GroupLayout.PREFERRED_SIZE, 697, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton_play, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTabbedPane_chords, javax.swing.GroupLayout.PREFERRED_SIZE, 602, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton_retornar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
                         .addComponent(jTextField_nomeMusica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel_nomeArtista))
-                    .addComponent(jTabbedPane_chords, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTabbedPane_chords, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -254,6 +233,7 @@ public class EditorMusica extends JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_play;
+    private javax.swing.JButton jButton_retornar;
     private javax.swing.JButton jButton_salvar;
     private javax.swing.JButton jButton_stop;
     private javax.swing.JLabel jLabel_nomeArtista;

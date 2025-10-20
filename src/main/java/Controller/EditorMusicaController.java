@@ -1,7 +1,10 @@
 package Controller;
 
 import ChordMaker.EditorUtil;
+import Model.Biblioteca;
 import Model.Musica;
+import Model.Usuario;
+import View.BibliotecaView;
 import View.EditorMusica;
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
@@ -16,15 +19,16 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
 public class EditorMusicaController {
-
+    private final Usuario usuario;
     private final Musica model;
     private final EditorMusica view;
 
     final private Sequencer sequencer;
 
-    public EditorMusicaController(Musica model, EditorMusica view) throws MidiUnavailableException {
-        this.model = model;
-        this.view = view;
+    public EditorMusicaController(Usuario usuario, Musica musica, EditorMusica eView) throws MidiUnavailableException {
+        this.usuario = usuario;
+        this.model = musica;
+        this.view = eView;
 
         this.sequencer = MidiSystem.getSequencer();
         this.sequencer.open();
@@ -68,7 +72,7 @@ public class EditorMusicaController {
             new Thread(() -> {
                 try {
                     var seq = parsearNotas();
-                    
+
                     if (seq == null) {
                         return;
                     }
@@ -94,20 +98,34 @@ public class EditorMusicaController {
                 sequencer.stop();
             }
         });
-        
+
         view.setBotaoSalvar(e -> {
             try {
                 var seq = parsearNotas();
-                
+
                 if (seq == null) {
                     return;
                 }
-                
+
                 model.setFaixa(seq);
                 model.salvar();
             } catch (InvalidMidiDataException ex) {
                 System.getLogger(EditorMusicaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
+        });
+
+        view.setBotaoRetorno(e -> {
+            try {
+                view.dispose();
+                
+                var bModel = new Biblioteca(usuario);
+                var bView = new BibliotecaView();
+                var bController = new BibliotecaController(bModel, bView);
+            } catch (MidiUnavailableException ex) {
+                System.getLogger(EditorMusicaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+           
+           
         });
 
         view.addWindowListener(new WindowAdapter() {
@@ -146,7 +164,7 @@ public class EditorMusicaController {
                 return null;
             }
         }
-        
+
         return seq;
     }
 }

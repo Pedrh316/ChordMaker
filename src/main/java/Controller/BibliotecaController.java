@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Artista;
 import Model.Biblioteca;
 import Model.Musica;
 import View.BibliotecaView;
@@ -52,6 +53,21 @@ public class BibliotecaController {
             view.setTocandoAgora(null);
         });
 
+        if (model.getUsuario() instanceof Artista art) {
+            view.setBotaoAdicionar(e -> {
+                try {
+                    view.dispose();
+
+                    var view = new EditorMusica();
+                    var controller = new EditorMusicaController(model.getUsuario(), new Musica(art), view);
+                } catch (MidiUnavailableException ex) {
+                    System.getLogger(BibliotecaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                }
+            });
+        } else {
+            view.removerBotaoAdicionar();
+        }
+
         view.setTocandoAgora(null);
 
         view.setVisible(true);
@@ -60,9 +76,9 @@ public class BibliotecaController {
     private void editarMusica(Musica m) {
         try {
             view.dispose();
-            
+
             var view = new EditorMusica();
-            var controller = new EditorMusicaController(m, view);
+            var controller = new EditorMusicaController(model.getUsuario(), m, view);
         } catch (MidiUnavailableException ex) {
             System.getLogger(BibliotecaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }

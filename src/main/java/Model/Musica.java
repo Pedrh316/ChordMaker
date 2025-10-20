@@ -1,11 +1,12 @@
 package Model;
 
 import java.util.Date;
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
 
 public class Musica {
 
-    private final int id;
+    private int id;
     private Sequence faixa;
     private String titulo;
     private long duracao;
@@ -25,6 +26,16 @@ public class Musica {
         this.artista = artista;
         this.titulo = titulo;
         this.faixa = faixa;
+    }
+
+    public Musica(Artista artista) {
+        try {
+            this.artista = artista;
+            this.faixa = new Sequence(Sequence.PPQ, 480);
+            faixa.createTrack();
+        } catch (InvalidMidiDataException ex) {
+            System.getLogger(Musica.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     }
 
     public String getTitulo() {

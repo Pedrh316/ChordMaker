@@ -31,6 +31,10 @@ public class BibliotecaView extends javax.swing.JFrame {
     public void setBotaoAdicionar(ActionListener l) {
         jButton_adicionar.addActionListener(l);
     }
+    
+    public void removerBotaoAdicionar() {
+        jButton_adicionar.setVisible(false);
+    }
 
     public void setBotaoStop(ActionListener l) {
         jButton_stop.addActionListener(l);
