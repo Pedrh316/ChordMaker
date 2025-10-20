@@ -3,6 +3,7 @@ package Controller;
 import Model.Biblioteca;
 import Model.Musica;
 import View.BibliotecaView;
+import View.EditorMusica;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -21,7 +22,7 @@ public class BibliotecaController {
 
         sequencer = MidiSystem.getSequencer();
         sequencer.open();
-        
+
         sequencer.addMetaEventListener(e -> {
             if (e.getType() == 47) {
                 view.setTocandoAgora(null);
@@ -32,17 +33,40 @@ public class BibliotecaController {
 
         view.atualizarLista(model, e -> {
             var id = e.getActionCommand();
-            model.getBiblioteca().stream().filter(m -> Integer.parseInt(id) == m.getId()).findFirst().ifPresent(this::tocarMusica);
+            model.getBiblioteca()
+                    .stream()
+                    .filter(m -> Integer.parseInt(id) == m.getId())
+                    .findFirst()
+                    .ifPresent(this::tocarMusica);
+        }, e -> {
+            var id = e.getActionCommand();
+            model.getBiblioteca()
+                    .stream()
+                    .filter(m -> Integer.parseInt(id) == m.getId())
+                    .findFirst()
+                    .ifPresent(this::editarMusica);
         });
 
         view.setBotaoStop(e -> {
             sequencer.stop();
             view.setTocandoAgora(null);
         });
-        
+
         view.setTocandoAgora(null);
 
-        this.view.setVisible(true);
+        view.setVisible(true);
+    }
+
+    private void editarMusica(Musica m) {
+        try {
+            view.dispose();
+            
+            var view = new EditorMusica();
+            var controller = new EditorMusicaController(m, view);
+        } catch (MidiUnavailableException ex) {
+            System.getLogger(BibliotecaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+
     }
 
     private void tocarMusica(Musica m) {
@@ -55,7 +79,7 @@ public class BibliotecaController {
                 sequencer.setSequence(m.getFaixa());
                 sequencer.setTickPosition(0);
                 sequencer.start();
-                
+
                 view.setTocandoAgora(m.getTitulo() + " de " + m.getArtista().getNome());
             } catch (InvalidMidiDataException ex) {
                 System.getLogger(BibliotecaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);

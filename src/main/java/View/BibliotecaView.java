@@ -45,7 +45,7 @@ public class BibliotecaView extends javax.swing.JFrame {
         
     }
 
-    public void atualizarLista(Biblioteca b, ActionListener musicaListener) {
+    public void atualizarLista(Biblioteca b, ActionListener musicaListener, ActionListener editarListener) {
         jPanel_biblioteca.removeAll();
         jPanel_biblioteca.setLayout(new BoxLayout(jPanel_biblioteca, BoxLayout.Y_AXIS));
 
@@ -67,7 +67,8 @@ public class BibliotecaView extends javax.swing.JFrame {
                 var botaoEditar = new JButton("Editar");
                 botaoEditar.setPreferredSize(new Dimension(100, 40));
                 botaoEditar.setMaximumSize(new Dimension(100, 40));
-                //botaoEditar.addActionListener();
+                botaoEditar.setActionCommand(Integer.toString(musica.getId()));
+                botaoEditar.addActionListener(editarListener);
 
                 linha.add(botaoEditar);
             } else {
