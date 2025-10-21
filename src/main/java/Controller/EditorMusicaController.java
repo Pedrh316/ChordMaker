@@ -19,14 +19,12 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
 public class EditorMusicaController {
-    private final Usuario usuario;
     private final Musica model;
     private final EditorMusica view;
 
     final private Sequencer sequencer;
 
-    public EditorMusicaController(Usuario usuario, Musica musica, EditorMusica eView) throws MidiUnavailableException {
-        this.usuario = usuario;
+    public EditorMusicaController(Musica musica, EditorMusica eView) throws MidiUnavailableException {
         this.model = musica;
         this.view = eView;
 
@@ -118,7 +116,9 @@ public class EditorMusicaController {
             try {
                 view.dispose();
                 
-                var bModel = new Biblioteca(usuario);
+                var bModel = new Biblioteca(model.getArtista());
+                bModel.carregarBiblioteca();
+                
                 var bView = new BibliotecaView();
                 var bController = new BibliotecaController(bModel, bView);
             } catch (MidiUnavailableException ex) {

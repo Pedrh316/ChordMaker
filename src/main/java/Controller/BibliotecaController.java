@@ -59,7 +59,7 @@ public class BibliotecaController {
                     view.dispose();
 
                     var view = new EditorMusica();
-                    var controller = new EditorMusicaController(model.getUsuario(), new Musica(art), view);
+                    var controller = new EditorMusicaController(new Musica(art), view);
                 } catch (MidiUnavailableException ex) {
                     System.getLogger(BibliotecaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                 }
@@ -78,7 +78,7 @@ public class BibliotecaController {
             view.dispose();
 
             var view = new EditorMusica();
-            var controller = new EditorMusicaController(model.getUsuario(), m, view);
+            var controller = new EditorMusicaController(m, view);
         } catch (MidiUnavailableException ex) {
             System.getLogger(BibliotecaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }

@@ -27,6 +27,7 @@ public class Main {
 
     public static void main(String[] args) {
         Usuario.criarTable();
+        Musica.criarTable();
 
         /* Testar login */
  /*
@@ -51,13 +52,13 @@ public class Main {
          */
  /* Testar biblioteca */
         try {
-            var artista = new Artista(0, "Teste artista");
-            var artista2 = new Artista(1, "Teste artista 2");
-            var biblioteca = new Biblioteca(artista);
+            var artista = new Artista(3, "Teste artista");
+            var artista2 = new Artista(2, "Teste artista 2");
+            var biblioteca = new Biblioteca(artista2);
 
-            for (int i = 0; i < 100; i++) {
+            for (int i = 1; i <= 100; i++) {
                 biblioteca.addBiblioteca(new Musica(
-                        i,
+                        -i,
                         Math.random() > 0.5 ? artista : artista2,
                         "Musica " + i,
                         gerarSequenceAleatoria()

@@ -1,5 +1,7 @@
 package Model;
 
+import ChordMaker.DBUtil;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +60,33 @@ public class Artista extends Usuario {
 
     public void editarMusica() {
         // chord maker
+    }
+
+    public static Artista buscarArtistaPorId(int id) {
+        String sql = "SELECT id, nome, email FROM usuario WHERE id = ?";
+
+        try {
+            var conn = DBUtil.getConnection();
+            var stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, id);
+            try (var rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    var artista = new Artista(
+                            rs.getInt("id"),
+                            rs.getString("nome")
+                    );
+
+                    artista.setEmail(rs.getString("email"));
+                    return artista;
+                }
+            }
+        } catch (SQLException e) {
+            System.getLogger(Biblioteca.class.getName())
+                    .log(System.Logger.Level.ERROR, (String) null, e);
+        }
+        return null;
+
     }
 
 }
