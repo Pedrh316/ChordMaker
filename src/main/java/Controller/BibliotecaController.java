@@ -5,6 +5,9 @@ import Model.Biblioteca;
 import Model.Musica;
 import View.BibliotecaView;
 import View.EditorMusica;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.function.Consumer;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -32,22 +35,6 @@ public class BibliotecaController {
 
         view.setNome(model);
 
-        view.atualizarLista(model, e -> {
-            var id = e.getActionCommand();
-            model.getBiblioteca()
-                    .stream()
-                    .filter(m -> Integer.parseInt(id) == m.getId())
-                    .findFirst()
-                    .ifPresent(this::tocarMusica);
-        }, e -> {
-            var id = e.getActionCommand();
-            model.getBiblioteca()
-                    .stream()
-                    .filter(m -> Integer.parseInt(id) == m.getId())
-                    .findFirst()
-                    .ifPresent(this::editarMusica);
-        });
-
         view.setBotaoStop(e -> {
             sequencer.stop();
             view.setTocandoAgora(null);
@@ -68,9 +55,37 @@ public class BibliotecaController {
             view.removerBotaoAdicionar();
         }
 
-        view.setTocandoAgora(null);
+        view.setBotaoAtualizar(e -> {
+            atualizarLista();
+        });
 
+        view.setTocandoAgora(null);
         view.setVisible(true);
+
+        atualizarLista();
+    }
+
+    private void atualizarLista() {
+        model.carregarBiblioteca();
+
+        view.atualizarLista(
+                model,
+                e -> {
+                    botaoAction(e, this::tocarMusica);
+                },
+                e -> {
+                    botaoAction(e, this::editarMusica);
+                }
+        );
+    }
+
+    private void botaoAction(ActionEvent e, Consumer<Musica> l) {
+        var id = e.getActionCommand();
+        model.getBiblioteca()
+                .stream()
+                .filter(m -> Integer.parseInt(id) == m.getId())
+                .findFirst()
+                .ifPresent(l);
     }
 
     private void editarMusica(Musica m) {

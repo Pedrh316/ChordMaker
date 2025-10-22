@@ -3,7 +3,6 @@ package Controller;
 import ChordMaker.EditorUtil;
 import Model.Biblioteca;
 import Model.Musica;
-import Model.Usuario;
 import View.BibliotecaView;
 import View.EditorMusica;
 import java.awt.Color;

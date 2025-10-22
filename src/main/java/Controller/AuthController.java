@@ -15,10 +15,7 @@ public class AuthController {
     private final Auth authModel;
     private final LoginView loginView;
     private final RegistrarView registrarView;
-    
-    private Usuario usuarioLogado;
-
-    //private Usuario usuarioModel;
+   
     public AuthController(Auth model, LoginView loginView, RegistrarView registrarView) {
         this.authModel = model;
         this.loginView = loginView;
@@ -45,7 +42,6 @@ public class AuthController {
                 
                 var bView = new BibliotecaView();
                 var bModel = new Biblioteca(u);
-                bModel.carregarBiblioteca();
                 var bController = new BibliotecaController(bModel, bView);
                 
             } catch (MidiUnavailableException ex) {
