@@ -1,10 +1,13 @@
 package Controller;
 
 import Model.Auth;
+import Model.Biblioteca;
 import Model.Usuario;
+import View.BibliotecaView;
 import View.LoginView;
 import View.RegistrarView;
 import java.util.regex.Pattern;
+import javax.sound.midi.MidiUnavailableException;
 import javax.swing.JOptionPane;
 
 public class AuthController {
@@ -34,12 +37,20 @@ public class AuthController {
         authModel.setEmail(loginView.getEmail());
         authModel.setSenha(loginView.getSenha());
 
-        Usuario u = authModel.login();
+        var u = authModel.login();
 
         if (u != null) {
-            JOptionPane.showMessageDialog(loginView, "Login com sucesso.");
-            usuarioLogado = u;
-            loginView.dispose();
+            try {
+                loginView.dispose();
+                
+                var bView = new BibliotecaView();
+                var bModel = new Biblioteca(u);
+                bModel.carregarBiblioteca();
+                var bController = new BibliotecaController(bModel, bView);
+                
+            } catch (MidiUnavailableException ex) {
+                System.getLogger(AuthController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
         } else {
             JOptionPane.showMessageDialog(loginView, "Usuário ou senha inválidos");
         }
