@@ -30,12 +30,12 @@ public class Main {
         Musica.criarTable();
 
         /* Testar login */
- /*
+ 
         var authModel = new Auth();
         var loginView = new LoginView();
         var registrarView = new RegistrarView();
         var authController = new AuthController(authModel, loginView, registrarView);
-         */
+         
  /* Testar editor */
  /*
         try {
@@ -51,6 +51,7 @@ public class Main {
         }
          */
  /* Testar biblioteca */
+ /*
         try {
             var artista = new Artista(3, "Teste artista");
             var artista2 = new Artista(2, "Teste artista 2");
@@ -70,6 +71,7 @@ public class Main {
         } catch (MidiUnavailableException | InvalidMidiDataException ex) {
             System.getLogger(Main.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
+*/
     }
 
     public static Sequence gerarSequenceAleatoria() throws InvalidMidiDataException {

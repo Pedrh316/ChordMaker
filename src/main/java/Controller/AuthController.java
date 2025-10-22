@@ -74,6 +74,7 @@ public class AuthController {
         authModel.setNome(registrarView.getNome());
         authModel.setSenha(registrarView.getSenha());
         authModel.setEmail(registrarView.getEmail());
+        authModel.setArtista(registrarView.getArtista());
         
         var registrou = authModel.registrar();
         

@@ -12,6 +12,7 @@ public class Auth {
     private String email;
     private String senha;
     private String nome;
+    private boolean artista;
 
     /* 
      *   Getters e Setters 
@@ -38,6 +39,14 @@ public class Auth {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public boolean isArtista() {
+        return artista;
+    }
+
+    public void setArtista(boolean artista) {
+        this.artista = artista;
     }
 
     public Usuario login() {
@@ -84,12 +93,13 @@ public class Auth {
     }
 
     public boolean registrar() {
-        String sql = "INSERT INTO usuario (nome, senha, email) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO usuario (nome, senha, email, is_artista) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DBUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, nome);
             ps.setString(2, senha);
             ps.setString(3, email);
+            ps.setBoolean(4, artista);
 
             ps.executeUpdate();
 
