@@ -5,13 +5,13 @@ import Model.Biblioteca;
 import Model.Musica;
 import View.BibliotecaView;
 import View.EditorMusica;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.function.Consumer;
+
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
+import java.awt.event.ActionEvent;
+import java.util.function.Consumer;
 
 public class BibliotecaController {
 
@@ -90,8 +90,6 @@ public class BibliotecaController {
 
     private void editarMusica(Musica m) {
         try {
-            view.dispose();
-
             var view = new EditorMusica();
             var controller = new EditorMusicaController(m, view);
         } catch (MidiUnavailableException ex) {

@@ -16,8 +16,6 @@ public class EditorMusica extends JFrame {
     private List<JTextArea> jTextArea_tracks = new ArrayList<>();
 
     public EditorMusica() {
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
         initComponents();
 
     }
@@ -52,11 +50,7 @@ public class EditorMusica extends JFrame {
         }
     }
     
-    public void setBotaoRetorno(ActionListener a) {
-        jButton_retornar.addActionListener(a);
-    }
-
-    public int getContagemTabs() {
+    public int getAbasContagem() {
         return jTabbedPane_chords.getTabCount();
     }
 
@@ -116,6 +110,58 @@ public class EditorMusica extends JFrame {
         var areaTexto = getAreaTexto(i);
         areaTexto.setBackground(cor);
     }
+    
+    public void setBotaoRemoverTrack(ActionListener l) {
+        jButton_removerTrack.addActionListener(l);
+    }
+    
+    public void setDesativarBotaoRemoverTrack() {
+        jButton_removerTrack.setEnabled(false);
+    }
+    
+    public void setAtivarBotaoRemoverTrack() {
+        jButton_removerTrack.setEnabled(true);
+    }
+    
+    public void setBotaoAdicionarTrack(ActionListener l) {
+        jButton_adicionarTrack.addActionListener(l);
+    }
+    
+    public int getAbaSelecionada() {
+        return jTabbedPane_chords.getSelectedIndex();
+    }
+    
+    public void setAbaSelecionada(int i) {
+        jTabbedPane_chords.setSelectedIndex(i);
+    }
+    
+    public void setBotaoAdicionarNota(ActionListener l) {
+        jButton_adicionarNota.addActionListener(l);
+    }
+    
+    public int getCanal() {
+        return (int) jSpinner_canal.getValue();
+    }
+    
+    public int getVelocidade() {
+        return (int) jSpinner_velocidade.getValue();
+    }
+    
+    public int getDuracao() {
+        return (int) jSpinner_duracao.getValue();
+    }
+    
+    public int getOitava() {
+        return (int) jSpinner_oitava.getValue();
+    }
+    
+    public String getNota() {
+        return (String) jComboBox_listaNotas.getSelectedItem();
+    }
+    
+    public int getTick() {
+        return (int) jSpinner_tick.getValue();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -132,10 +178,25 @@ public class EditorMusica extends JFrame {
         jButton_play = new javax.swing.JButton();
         jButton_stop = new javax.swing.JButton();
         jButton_salvar = new javax.swing.JButton();
-        jButton_retornar = new javax.swing.JButton();
+        jButton_adicionarTrack = new javax.swing.JButton();
+        jButton_removerTrack = new javax.swing.JButton();
+        jPanel_adicionarNota = new javax.swing.JPanel();
+        jLabel_nota = new javax.swing.JLabel();
+        jLabel_oitava = new javax.swing.JLabel();
+        jLabel_velocidade = new javax.swing.JLabel();
+        jLabel_canal = new javax.swing.JLabel();
+        jLabel_duracao = new javax.swing.JLabel();
+        jSpinner_velocidade = new javax.swing.JSpinner();
+        jSpinner_oitava = new javax.swing.JSpinner();
+        jComboBox_listaNotas = new javax.swing.JComboBox<>();
+        jSpinner_canal = new javax.swing.JSpinner();
+        jSpinner_duracao = new javax.swing.JSpinner();
+        jButton_adicionarNota = new javax.swing.JButton();
+        jLabel_adicionarNota = new javax.swing.JLabel();
+        jLabel_tick = new javax.swing.JLabel();
+        jSpinner_tick = new javax.swing.JSpinner();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(900, 600));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel_nomeArtista.setText("Artista");
 
@@ -147,7 +208,102 @@ public class EditorMusica extends JFrame {
 
         jButton_salvar.setText("💾");
 
-        jButton_retornar.setText("⬅");
+        jButton_adicionarTrack.setText("Adicionar Track");
+
+        jButton_removerTrack.setText("Remover Track");
+
+        jPanel_adicionarNota.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel_nota.setText("Nota:");
+
+        jLabel_oitava.setText("Oitava:");
+
+        jLabel_velocidade.setText("Velocidade:");
+
+        jLabel_canal.setText("Canal:");
+
+        jLabel_duracao.setText("Duração:");
+
+        jSpinner_velocidade.setModel(new javax.swing.SpinnerNumberModel(0, 0, 127, 1));
+
+        jSpinner_oitava.setModel(new javax.swing.SpinnerNumberModel(0, -1, 9, 1));
+
+        jComboBox_listaNotas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" }));
+
+        jSpinner_canal.setModel(new javax.swing.SpinnerNumberModel(0, 0, 15, 1));
+
+        jSpinner_duracao.setModel(new javax.swing.SpinnerNumberModel(480, 0, null, 1));
+
+        jButton_adicionarNota.setText("Adicionar nota");
+
+        jLabel_adicionarNota.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel_adicionarNota.setText("Adicionar Nota");
+
+        jLabel_tick.setText("Tick:");
+
+        jSpinner_tick.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+
+        javax.swing.GroupLayout jPanel_adicionarNotaLayout = new javax.swing.GroupLayout(jPanel_adicionarNota);
+        jPanel_adicionarNota.setLayout(jPanel_adicionarNotaLayout);
+        jPanel_adicionarNotaLayout.setHorizontalGroup(
+            jPanel_adicionarNotaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_adicionarNotaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel_adicionarNotaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton_adicionarNota)
+                    .addComponent(jLabel_adicionarNota)
+                    .addGroup(jPanel_adicionarNotaLayout.createSequentialGroup()
+                        .addGroup(jPanel_adicionarNotaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel_adicionarNotaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel_velocidade, javax.swing.GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE)
+                                .addComponent(jLabel_oitava, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel_nota, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel_canal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel_duracao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel_tick, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(29, 29, 29)
+                        .addGroup(jPanel_adicionarNotaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jSpinner_velocidade, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBox_listaNotas, javax.swing.GroupLayout.Alignment.LEADING, 0, 100, Short.MAX_VALUE)
+                            .addComponent(jSpinner_oitava, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSpinner_canal)
+                            .addComponent(jSpinner_duracao)
+                            .addComponent(jSpinner_tick, javax.swing.GroupLayout.Alignment.LEADING))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel_adicionarNotaLayout.setVerticalGroup(
+            jPanel_adicionarNotaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_adicionarNotaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel_adicionarNota)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addGroup(jPanel_adicionarNotaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel_tick, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jSpinner_tick, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel_adicionarNotaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel_nota)
+                    .addComponent(jComboBox_listaNotas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel_adicionarNotaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel_oitava)
+                    .addComponent(jSpinner_oitava, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel_adicionarNotaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel_velocidade)
+                    .addComponent(jSpinner_velocidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel_adicionarNotaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jSpinner_canal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel_canal))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel_adicionarNotaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel_duracao)
+                    .addComponent(jSpinner_duracao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton_adicionarNota)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -158,9 +314,11 @@ public class EditorMusica extends JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextField_nomeMusica)
                     .addComponent(jLabel_nomeArtista, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                    .addComponent(jPanel_adicionarNota, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton_retornar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jButton_adicionarTrack)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton_removerTrack, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -175,22 +333,25 @@ public class EditorMusica extends JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton_retornar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
                         .addComponent(jTextField_nomeMusica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel_nomeArtista))
+                        .addComponent(jLabel_nomeArtista)
+                        .addGap(103, 103, 103)
+                        .addComponent(jPanel_adicionarNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jTabbedPane_chords, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jButton_play, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton_stop, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton_salvar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 58, Short.MAX_VALUE))
+                    .addComponent(jButton_salvar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton_removerTrack)
+                        .addComponent(jButton_adicionarTrack)))
+                .addGap(0, 11, Short.MAX_VALUE))
         );
 
         pack();
@@ -232,11 +393,27 @@ public class EditorMusica extends JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton_adicionarNota;
+    private javax.swing.JButton jButton_adicionarTrack;
     private javax.swing.JButton jButton_play;
-    private javax.swing.JButton jButton_retornar;
+    private javax.swing.JButton jButton_removerTrack;
     private javax.swing.JButton jButton_salvar;
     private javax.swing.JButton jButton_stop;
+    private javax.swing.JComboBox<String> jComboBox_listaNotas;
+    private javax.swing.JLabel jLabel_adicionarNota;
+    private javax.swing.JLabel jLabel_canal;
+    private javax.swing.JLabel jLabel_duracao;
     private javax.swing.JLabel jLabel_nomeArtista;
+    private javax.swing.JLabel jLabel_nota;
+    private javax.swing.JLabel jLabel_oitava;
+    private javax.swing.JLabel jLabel_tick;
+    private javax.swing.JLabel jLabel_velocidade;
+    private javax.swing.JPanel jPanel_adicionarNota;
+    private javax.swing.JSpinner jSpinner_canal;
+    private javax.swing.JSpinner jSpinner_duracao;
+    private javax.swing.JSpinner jSpinner_oitava;
+    private javax.swing.JSpinner jSpinner_tick;
+    private javax.swing.JSpinner jSpinner_velocidade;
     private javax.swing.JTabbedPane jTabbedPane_chords;
     private javax.swing.JTextField jTextField_nomeMusica;
     // End of variables declaration//GEN-END:variables

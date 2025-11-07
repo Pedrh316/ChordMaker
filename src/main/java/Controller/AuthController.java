@@ -2,13 +2,13 @@ package Controller;
 
 import Model.Auth;
 import Model.Biblioteca;
-import Model.Usuario;
 import View.BibliotecaView;
 import View.LoginView;
 import View.RegistrarView;
-import java.util.regex.Pattern;
+
 import javax.sound.midi.MidiUnavailableException;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.util.regex.Pattern;
 
 public class AuthController {
 

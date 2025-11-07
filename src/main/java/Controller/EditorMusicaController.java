@@ -9,15 +9,18 @@ import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.ShortMessage;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
 public class EditorMusicaController {
+
     private final Musica model;
     private final EditorMusica view;
 
@@ -65,25 +68,36 @@ public class EditorMusicaController {
 
         view.setSequence(model.getFaixa());
 
-        view.setBotaoPlay(e -> {
+        view.setBotaoPlay((var e) -> {
             new Thread(() -> {
                 try {
+                    if (!sequencer.isOpen()) {
+                        sequencer.open();
+                        Thread.sleep(100);
+                    }
+                    
+                    if (sequencer.isRunning()) {
+                        sequencer.stop();
+                        Thread.sleep(100);
+                    }
+                    
+                    
                     var seq = parsearNotas();
 
                     if (seq == null) {
+                        System.out.println("null seq");
                         return;
                     }
 
                     model.setFaixa(seq);
 
-                    if (sequencer.isRunning()) {
-                        sequencer.stop();
-                    }
-
                     sequencer.setSequence(model.getFaixa());
                     sequencer.setTickPosition(0);
+                    
+                    Thread.sleep(100);
+                    
                     sequencer.start();
-                } catch (InvalidMidiDataException ex) {
+                } catch (InvalidMidiDataException | MidiUnavailableException | InterruptedException ex) {
                     System.getLogger(EditorMusicaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                 }
 
@@ -111,22 +125,6 @@ public class EditorMusicaController {
             }
         });
 
-        view.setBotaoRetorno(e -> {
-            try {
-                view.dispose();
-                
-                var bModel = new Biblioteca(model.getArtista());
-                bModel.carregarBiblioteca();
-                
-                var bView = new BibliotecaView();
-                var bController = new BibliotecaController(bModel, bView);
-            } catch (MidiUnavailableException ex) {
-                System.getLogger(EditorMusicaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            }
-           
-           
-        });
-
         view.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -135,13 +133,82 @@ public class EditorMusicaController {
 
         });
 
+        view.setBotaoAdicionarTrack(e -> {
+            var abaSelecionada = view.getAbaSelecionada();
+
+            model.getFaixa().createTrack();
+            view.setSequence(model.getFaixa());
+
+            view.setAbaSelecionada(abaSelecionada);
+
+            if (view.getAbasContagem() > 1) {
+                view.setAtivarBotaoRemoverTrack();
+            }
+        });
+
+        view.setBotaoRemoverTrack(e -> {
+            var abaSelecionada = view.getAbaSelecionada();
+
+            var faixa = model.getFaixa();
+
+            if (faixa.getTracks().length > 1) {
+                faixa.deleteTrack(faixa.getTracks()[abaSelecionada]);
+                view.setSequence(model.getFaixa());
+
+                var novaAba = Math.min(abaSelecionada, view.getAbasContagem() - 1);
+                view.setAbaSelecionada(novaAba);
+            }
+
+            if (view.getAbasContagem() <= 1) {
+                view.setDesativarBotaoRemoverTrack();
+            }
+        });
+        
+        view.setBotaoAdicionarNota(e -> {
+            try {
+                var canal = view.getCanal();
+                var velocidade = view.getVelocidade();
+                var duracao = view.getDuracao();
+                var oitava = view.getOitava();
+                var nomeNota = view.getNota();
+                var tick = view.getTick();
+                
+                var numeroNota = EditorUtil.notaParaNumero(nomeNota + oitava);
+                
+                var onMsg = new ShortMessage();
+                var offMsg = new ShortMessage();
+                
+                onMsg.setMessage(ShortMessage.NOTE_ON, canal, numeroNota, velocidade);
+                offMsg.setMessage(ShortMessage.NOTE_OFF, canal, numeroNota, 0);
+                
+                var trackNum = view.getAbaSelecionada();
+                var track = model.getFaixa().getTracks()[trackNum];
+                
+                
+                track.add(new MidiEvent(onMsg, tick));
+                if (duracao > 0) {
+                    track.add(new MidiEvent(offMsg, tick + duracao));
+                }
+                
+                view.setSequence(model.getFaixa());
+                view.setAbaSelecionada(trackNum);
+            } catch (InvalidMidiDataException ex) {
+                System.getLogger(EditorMusicaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        });
+        
+
+        if (view.getAbasContagem() <= 1) {
+            view.setDesativarBotaoRemoverTrack();
+        }
+
         view.setVisible(true);
     }
 
     public Sequence parsearNotas() throws InvalidMidiDataException {
         var seq = new Sequence(Sequence.PPQ, 480);
 
-        for (int i = 0; i < view.getContagemTabs(); i++) {
+        for (int i = 0; i < view.getAbasContagem(); i++) {
             var texto = view.getTextoTrack(i);
 
             try {
