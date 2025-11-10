@@ -6,17 +6,31 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sound.midi.Sequence;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class EditorMusica extends JFrame {
 
     private List<JTextArea> jTextArea_tracks = new ArrayList<>();
+    private JFileChooser jFileChooser_importar = new JFileChooser();
+    private JFileChooser jFileChooser_exportar = new JFileChooser();
 
     public EditorMusica() {
         initComponents();
+        
+        jFileChooser_importar.setDialogTitle("Importar arquivo MIDI");
+        jFileChooser_importar.setFileFilter(new FileNameExtensionFilter(
+                "Arquivos MIDI (*.mid, *.midi)", "mid", "midi"
+        ));
+        
+        jFileChooser_exportar.setDialogTitle("Exportar arquivo MIDI");
+        jFileChooser_exportar.setFileFilter(new FileNameExtensionFilter(
+                "Arquivos MIDI (*.mid, *.midi)", "mid", "midi"
+        ));
 
     }
 
@@ -162,6 +176,22 @@ public class EditorMusica extends JFrame {
     public int getTick() {
         return (int) jSpinner_tick.getValue();
     }
+    
+    public void setBotaoImportar(ActionListener l) {
+        jButton_importar.addActionListener(l);
+    }
+    
+    public void setBotaoExportar(ActionListener l) {
+        jButton_exportar.addActionListener(l);
+    }
+    
+    public JFileChooser getImportarFilePicker() {
+        return jFileChooser_importar;
+    }
+    
+    public JFileChooser getExportarFilePicker() {
+        return jFileChooser_exportar;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -172,14 +202,10 @@ public class EditorMusica extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel_nomeArtista = new javax.swing.JLabel();
-        jTextField_nomeMusica = new javax.swing.JTextField();
         jTabbedPane_chords = new javax.swing.JTabbedPane();
         jButton_play = new javax.swing.JButton();
         jButton_stop = new javax.swing.JButton();
         jButton_salvar = new javax.swing.JButton();
-        jButton_adicionarTrack = new javax.swing.JButton();
-        jButton_removerTrack = new javax.swing.JButton();
         jPanel_adicionarNota = new javax.swing.JPanel();
         jLabel_nota = new javax.swing.JLabel();
         jLabel_oitava = new javax.swing.JLabel();
@@ -195,22 +221,25 @@ public class EditorMusica extends JFrame {
         jLabel_adicionarNota = new javax.swing.JLabel();
         jLabel_tick = new javax.swing.JLabel();
         jSpinner_tick = new javax.swing.JSpinner();
+        jPanel1 = new javax.swing.JPanel();
+        jButton_importar = new javax.swing.JButton();
+        jButton_exportar = new javax.swing.JButton();
+        jButton_adicionarTrack = new javax.swing.JButton();
+        jButton_removerTrack = new javax.swing.JButton();
+        jLabel_editando = new javax.swing.JLabel();
+        jPanel_titulo = new javax.swing.JPanel();
+        jTextField_nomeMusica = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel_nomeArtista = new javax.swing.JLabel();
+        jLabel_titulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        jLabel_nomeArtista.setText("Artista");
-
-        jTextField_nomeMusica.setText("Titulo");
 
         jButton_play.setText("▶");
 
         jButton_stop.setText("⏹");
 
         jButton_salvar.setText("💾");
-
-        jButton_adicionarTrack.setText("Adicionar Track");
-
-        jButton_removerTrack.setText("Remover Track");
 
         jPanel_adicionarNota.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -305,41 +334,125 @@ public class EditorMusica extends JFrame {
                 .addContainerGap())
         );
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jButton_importar.setText("Importar .MID");
+
+        jButton_exportar.setText("Exportar .MID");
+
+        jButton_adicionarTrack.setText("Adicionar Track");
+
+        jButton_removerTrack.setText("Remover Track");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton_importar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton_exportar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton_removerTrack, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                    .addComponent(jButton_adicionarTrack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton_importar)
+                    .addComponent(jButton_adicionarTrack))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton_removerTrack)
+                    .addComponent(jButton_exportar))
+                .addContainerGap())
+        );
+
+        jLabel_editando.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel_editando.setText("Editando");
+
+        jPanel_titulo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jTextField_nomeMusica.setText("Titulo");
+
+        jLabel1.setText("Artista:");
+
+        jLabel_nomeArtista.setText("Artista");
+
+        jLabel_titulo.setText("Título:");
+
+        javax.swing.GroupLayout jPanel_tituloLayout = new javax.swing.GroupLayout(jPanel_titulo);
+        jPanel_titulo.setLayout(jPanel_tituloLayout);
+        jPanel_tituloLayout.setHorizontalGroup(
+            jPanel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_tituloLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel_titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel_nomeArtista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTextField_nomeMusica))
+                .addContainerGap())
+        );
+        jPanel_tituloLayout.setVerticalGroup(
+            jPanel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_tituloLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField_nomeMusica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel_titulo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(jPanel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel_nomeArtista))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField_nomeMusica)
-                    .addComponent(jLabel_nomeArtista, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
-                    .addComponent(jPanel_adicionarNota, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton_adicionarTrack)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton_removerTrack, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel_editando)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton_salvar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(415, 415, 415)
-                        .addComponent(jButton_stop, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel_adicionarNota, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel_titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton_play, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTabbedPane_chords, javax.swing.GroupLayout.PREFERRED_SIZE, 602, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton_salvar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(415, 415, 415)
+                                .addComponent(jButton_stop, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton_play, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTabbedPane_chords, javax.swing.GroupLayout.PREFERRED_SIZE, 602, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
+                .addContainerGap()
+                .addComponent(jLabel_editando, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField_nomeMusica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel_nomeArtista)
-                        .addGap(103, 103, 103)
+                        .addComponent(jPanel_titulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel_adicionarNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jTabbedPane_chords, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -347,11 +460,8 @@ public class EditorMusica extends JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jButton_play, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton_stop, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton_salvar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton_removerTrack)
-                        .addComponent(jButton_adicionarTrack)))
-                .addGap(0, 11, Short.MAX_VALUE))
+                    .addComponent(jButton_salvar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -395,20 +505,27 @@ public class EditorMusica extends JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_adicionarNota;
     private javax.swing.JButton jButton_adicionarTrack;
+    private javax.swing.JButton jButton_exportar;
+    private javax.swing.JButton jButton_importar;
     private javax.swing.JButton jButton_play;
     private javax.swing.JButton jButton_removerTrack;
     private javax.swing.JButton jButton_salvar;
     private javax.swing.JButton jButton_stop;
     private javax.swing.JComboBox<String> jComboBox_listaNotas;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel_adicionarNota;
     private javax.swing.JLabel jLabel_canal;
     private javax.swing.JLabel jLabel_duracao;
+    private javax.swing.JLabel jLabel_editando;
     private javax.swing.JLabel jLabel_nomeArtista;
     private javax.swing.JLabel jLabel_nota;
     private javax.swing.JLabel jLabel_oitava;
     private javax.swing.JLabel jLabel_tick;
+    private javax.swing.JLabel jLabel_titulo;
     private javax.swing.JLabel jLabel_velocidade;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel_adicionarNota;
+    private javax.swing.JPanel jPanel_titulo;
     private javax.swing.JSpinner jSpinner_canal;
     private javax.swing.JSpinner jSpinner_duracao;
     private javax.swing.JSpinner jSpinner_oitava;

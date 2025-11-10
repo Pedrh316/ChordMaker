@@ -43,8 +43,6 @@ public class BibliotecaController {
         if (model.getUsuario() instanceof Artista art) {
             view.setBotaoAdicionar(e -> {
                 try {
-                    view.dispose();
-
                     var view = new EditorMusica();
                     var controller = new EditorMusicaController(new Musica(art), view);
                 } catch (MidiUnavailableException ex) {
