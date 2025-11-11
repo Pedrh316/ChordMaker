@@ -1,8 +1,8 @@
 package Controller;
 
+import ChordMaker.Navegador;
 import ChordMaker.ValidadorDeEmail;
 import Model.Auth;
-import View.LoginView;
 import View.RegistrarView;
 import javax.swing.JOptionPane;
 
@@ -51,9 +51,7 @@ public class RegistrarController {
     private void abrirLogin() {
         view.dispose();
         
-        var loginView = new LoginView();
-        var authModel = new Auth();
-        var controller = new LoginController(authModel, loginView);
+        Navegador.getNavegador().abrirLogin();
     }
 
 }

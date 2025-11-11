@@ -1,5 +1,6 @@
 package Controller;
 
+import ChordMaker.Navegador;
 import Model.Artista;
 import Model.Biblioteca;
 import Model.Musica;
@@ -43,8 +44,7 @@ public class BibliotecaController {
         if (model.getUsuario() instanceof Artista art) {
             view.setBotaoAdicionar(e -> {
                 try {
-                    var view = new EditorMusica();
-                    var controller = new EditorMusicaController(new Musica(art), view);
+                    Navegador.getNavegador().abrirEditorMusica(new Musica(art));
                 } catch (MidiUnavailableException ex) {
                     System.getLogger(BibliotecaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                 }
@@ -88,8 +88,7 @@ public class BibliotecaController {
 
     private void editarMusica(Musica m) {
         try {
-            var view = new EditorMusica();
-            var controller = new EditorMusicaController(m, view);
+            Navegador.getNavegador().abrirEditorMusica(m);
         } catch (MidiUnavailableException ex) {
             System.getLogger(BibliotecaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }

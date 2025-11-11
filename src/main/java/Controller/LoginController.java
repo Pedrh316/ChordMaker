@@ -1,10 +1,8 @@
 package Controller;
 
+import ChordMaker.Navegador;
 import Model.Auth;
-import Model.Biblioteca;
-import View.BibliotecaView;
 import View.LoginView;
-import View.RegistrarView;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.JOptionPane;
 
@@ -32,10 +30,7 @@ public class LoginController {
             try {
                 view.dispose();
                 
-                var bView = new BibliotecaView();
-                var bModel = new Biblioteca(u);
-                var bController = new BibliotecaController(bModel, bView);
-                
+                Navegador.getNavegador().abrirBiblioteca(u);
             } catch (MidiUnavailableException ex) {
                 System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
@@ -47,8 +42,6 @@ public class LoginController {
     private void abrirRegistro() {
         view.dispose();
         
-        var registrarView = new RegistrarView();
-        var authModel = new Auth();
-        var registrarController = new RegistrarController(authModel, registrarView);
+        Navegador.getNavegador().abrirRegistro();
     }
 }
