@@ -1,5 +1,6 @@
 package Controller;
 
+import ChordMaker.Core.MidiExportImport;
 import ChordMaker.Util.EditorUtil;
 import Model.Musica;
 import View.EditorMusica;
@@ -25,11 +26,15 @@ public class EditorMusicaController {
     private final Musica model;
     private final EditorMusica view;
 
-    final private Sequencer sequencer;
+    private final Sequencer sequencer;
+    private final MidiExportImport IO;
+    
 
     public EditorMusicaController(Musica musica, EditorMusica eView) throws MidiUnavailableException {
         this.model = musica;
         this.view = eView;
+        
+        this.IO = new MidiExportImport();
 
         this.sequencer = MidiSystem.getSequencer();
         this.sequencer.open();
@@ -198,44 +203,8 @@ public class EditorMusicaController {
             }
         });
         
-        view.setBotaoImportar(e -> {
-            try {
-                var filePicker = view.getImportarFilePicker();
-                var resultado = filePicker.showOpenDialog(view);
-                
-                if (resultado != JFileChooser.APPROVE_OPTION)
-                    return;
-                
-                var arquivo = filePicker.getSelectedFile();
-                var novaSeq = MidiSystem.getSequence(arquivo);
-                
-                model.setFaixa(novaSeq);
-                view.setSequence(novaSeq);
-            } catch (InvalidMidiDataException | IOException ex) {
-                System.getLogger(EditorMusicaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            }
-        });
-        
-        view.setBotaoExportar(e -> {
-            try {
-                var filePicker = view.getExportarFilePicker();
-                filePicker.setSelectedFile(new File(
-                        model.getArtista().getNome() + " - " + model.getTitulo() + ".mid"
-                ));
-                
-                var resultado = filePicker.showSaveDialog(view);
-                
-                if (resultado != JFileChooser.APPROVE_OPTION)
-                    return;
-                
-                var arquivo = filePicker.getSelectedFile();
-                var seq = model.getFaixa();
-                
-                MidiSystem.write(seq, MidiSystem.getMidiFileTypes(seq)[0], arquivo);
-            } catch (IOException ex) {
-                System.getLogger(EditorMusicaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            }
-        });
+        view.setBotaoImportar(e -> this.IO.importar(view, model));
+        view.setBotaoExportar(e -> this.IO.exportar(view, model));
         
 
         if (view.getAbasContagem() <= 1) {
