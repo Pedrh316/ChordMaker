@@ -1,22 +1,18 @@
 package Controller;
 
 import ChordMaker.Core.MidiExportImport;
+import ChordMaker.Core.MidiPlayer;
 import ChordMaker.Util.EditorUtil;
 import Model.Musica;
 import View.EditorMusica;
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.IOException;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
-import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
-import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
-import javax.swing.JFileChooser;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
@@ -26,25 +22,22 @@ public class EditorMusicaController {
     private final Musica model;
     private final EditorMusica view;
 
-    private final Sequencer sequencer;
+    private final MidiPlayer player;
     private final MidiExportImport IO;
-    
 
     public EditorMusicaController(Musica musica, EditorMusica eView) throws MidiUnavailableException {
         this.model = musica;
         this.view = eView;
-        
-        this.IO = new MidiExportImport();
 
-        this.sequencer = MidiSystem.getSequencer();
-        this.sequencer.open();
+        this.IO = new MidiExportImport();
+        this.player = new MidiPlayer();
 
         view.setMusicaNome(model.getTitulo());
         view.setArtistaNome(model.getArtista().getNome());
 
         view.setMusicaNomeDocumentListener(new DocumentListener() {
-            /* 
-             * Atualizar título da música de campo editável 
+            /*
+             * Atualizar título da música de campo editável
              */
             private void updateMusica(DocumentEvent e) {
                 var document = e.getDocument();
@@ -77,17 +70,6 @@ public class EditorMusicaController {
         view.setBotaoPlay(e -> {
             new Thread(() -> {
                 try {
-                    if (!sequencer.isOpen()) {
-                        sequencer.open();
-                        Thread.sleep(100);
-                    }
-                    
-                    if (sequencer.isRunning()) {
-                        sequencer.stop();
-                        Thread.sleep(100);
-                    }
-                    
-                    
                     var seq = parsearNotas();
 
                     if (seq == null) {
@@ -96,25 +78,14 @@ public class EditorMusicaController {
                     }
 
                     model.setFaixa(seq);
-
-                    sequencer.setSequence(model.getFaixa());
-                    sequencer.setTickPosition(0);
-                    
-                    Thread.sleep(100);
-                    
-                    sequencer.start();
-                } catch (InvalidMidiDataException | MidiUnavailableException | InterruptedException ex) {
+                    player.play(seq);
+                } catch (InvalidMidiDataException | MidiUnavailableException ex) {
                     System.getLogger(EditorMusicaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                 }
-
             }).start();
         });
 
-        view.setBotaoStop(e -> {
-            if (sequencer.isRunning()) {
-                sequencer.stop();
-            }
-        });
+        view.setBotaoStop(e -> player.stop());
 
         view.setBotaoSalvar(e -> {
             try {
@@ -134,9 +105,8 @@ public class EditorMusicaController {
         view.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                sequencer.close();
+                player.close();
             }
-
         });
 
         view.setBotaoAdicionarTrack(e -> {
@@ -169,7 +139,7 @@ public class EditorMusicaController {
                 view.setDesativarBotaoRemoverTrack();
             }
         });
-        
+
         view.setBotaoAdicionarNota(e -> {
             try {
                 var canal = view.getCanal();
@@ -178,34 +148,32 @@ public class EditorMusicaController {
                 var oitava = view.getOitava();
                 var nomeNota = view.getNota();
                 var tick = view.getTick();
-                
+
                 var numeroNota = EditorUtil.notaParaNumero(nomeNota + oitava);
-                
+
                 var onMsg = new ShortMessage();
                 var offMsg = new ShortMessage();
-                
+
                 onMsg.setMessage(ShortMessage.NOTE_ON, canal, numeroNota, velocidade);
                 offMsg.setMessage(ShortMessage.NOTE_OFF, canal, numeroNota, 0);
-                
+
                 var trackNum = view.getAbaSelecionada();
                 var track = model.getFaixa().getTracks()[trackNum];
-                
-                
+
                 track.add(new MidiEvent(onMsg, tick));
                 if (duracao > 0) {
                     track.add(new MidiEvent(offMsg, tick + duracao));
                 }
-                
+
                 view.setSequence(model.getFaixa());
                 view.setAbaSelecionada(trackNum);
             } catch (InvalidMidiDataException ex) {
                 System.getLogger(EditorMusicaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
         });
-        
+
         view.setBotaoImportar(e -> this.IO.importar(view, model));
         view.setBotaoExportar(e -> this.IO.exportar(view, model));
-        
 
         if (view.getAbasContagem() <= 1) {
             view.setDesativarBotaoRemoverTrack();
