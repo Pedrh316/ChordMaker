@@ -5,13 +5,11 @@ import ChordMaker.Core.MidiPlayer;
 import ChordMaker.Util.EditorUtil;
 import Model.Musica;
 import View.EditorMusica;
-import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -70,10 +68,9 @@ public class EditorMusicaController {
         view.setBotaoPlay(e -> {
             new Thread(() -> {
                 try {
-                    var seq = parsearNotas();
+                    var seq = EditorUtil.parsearNotas(view);
 
                     if (seq == null) {
-                        System.out.println("null seq");
                         return;
                     }
 
@@ -88,18 +85,14 @@ public class EditorMusicaController {
         view.setBotaoStop(e -> player.stop());
 
         view.setBotaoSalvar(e -> {
-            try {
-                var seq = parsearNotas();
+            var seq = EditorUtil.parsearNotas(view);
 
-                if (seq == null) {
-                    return;
-                }
-
-                model.setFaixa(seq);
-                model.salvar();
-            } catch (InvalidMidiDataException ex) {
-                System.getLogger(EditorMusicaController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            if (seq == null) {
+                return;
             }
+
+            model.setFaixa(seq);
+            model.salvar();
         });
 
         view.addWindowListener(new WindowAdapter() {
@@ -180,34 +173,5 @@ public class EditorMusicaController {
         }
 
         view.setVisible(true);
-    }
-
-    public Sequence parsearNotas() throws InvalidMidiDataException {
-        var seq = new Sequence(Sequence.PPQ, 480);
-
-        for (int i = 0; i < view.getAbasContagem(); i++) {
-            var texto = view.getTextoTrack(i);
-
-            try {
-                var parseado = EditorUtil.textoParaSequence(texto);
-                if (parseado == null) {
-                    throw new InvalidMidiDataException();
-                }
-
-                var trackParseado = parseado.getTracks()[0];
-                var nTrack = seq.createTrack();
-
-                for (int j = 0; j < trackParseado.size(); j++) {
-                    nTrack.add(trackParseado.get(j));
-                }
-
-                view.setTrackCor(i, Color.WHITE);
-            } catch (InvalidMidiDataException ex) {
-                view.setTrackCor(i, Color.RED);
-                return null;
-            }
-        }
-
-        return seq;
     }
 }

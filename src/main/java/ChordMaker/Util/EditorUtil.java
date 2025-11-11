@@ -1,5 +1,7 @@
 package ChordMaker.Util;
 
+import View.EditorMusica;
+import java.awt.Color;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.Sequence;
@@ -77,6 +79,41 @@ public class EditorUtil {
             // System.err.println("Erro parseando texto: " + e.getMessage());
             return null;
         }
+    }
+    
+    public static Sequence parsearNotas(EditorMusica view) {
+        try {
+            var seq = new Sequence(Sequence.PPQ, 480);
+            
+            for (int i = 0; i < view.getAbasContagem(); i++) {
+                var texto = view.getTextoTrack(i);
+                
+                try {
+                    var parseado = textoParaSequence(texto);
+                    if (parseado == null) {
+                        throw new InvalidMidiDataException();
+                    }
+                    
+                    var trackParseado = parseado.getTracks()[0];
+                    var nTrack = seq.createTrack();
+                    
+                    for (int j = 0; j < trackParseado.size(); j++) {
+                        nTrack.add(trackParseado.get(j));
+                    }
+                    
+                    view.setTrackCor(i, Color.WHITE);
+                } catch (InvalidMidiDataException ex) {
+                    view.setTrackCor(i, Color.RED);
+                    return null;
+                }
+            }
+            
+            return seq;
+        } catch (InvalidMidiDataException ex) {
+            System.getLogger(EditorUtil.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        
+        return null;
     }
 
 }
