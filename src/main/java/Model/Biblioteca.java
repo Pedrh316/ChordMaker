@@ -1,6 +1,6 @@
 package Model;
 
-import ChordMaker.DBUtil;
+import ChordMaker.Util.DBUtil;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;

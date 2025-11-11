@@ -1,4 +1,4 @@
-package ChordMaker;
+package ChordMaker.Util;
 
 import java.util.regex.Pattern;
 

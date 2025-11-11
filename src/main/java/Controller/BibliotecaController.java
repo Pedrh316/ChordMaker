@@ -1,6 +1,6 @@
 package Controller;
 
-import ChordMaker.Navegador;
+import ChordMaker.Core.Navegador;
 import Model.Artista;
 import Model.Biblioteca;
 import Model.Musica;

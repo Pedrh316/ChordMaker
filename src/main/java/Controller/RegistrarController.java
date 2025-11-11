@@ -1,7 +1,7 @@
 package Controller;
 
-import ChordMaker.Navegador;
-import ChordMaker.ValidadorDeEmail;
+import ChordMaker.Core.Navegador;
+import ChordMaker.Util.ValidadorDeEmail;
 import Model.Auth;
 import View.RegistrarView;
 import javax.swing.JOptionPane;

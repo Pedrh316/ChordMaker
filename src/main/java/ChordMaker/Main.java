@@ -1,5 +1,6 @@
 package ChordMaker;
 
+import ChordMaker.Core.Navegador;
 import Model.Musica;
 import Model.Usuario;
 

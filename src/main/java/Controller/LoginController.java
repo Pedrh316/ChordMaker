@@ -1,6 +1,6 @@
 package Controller;
 
-import ChordMaker.Navegador;
+import ChordMaker.Core.Navegador;
 import Model.Auth;
 import View.LoginView;
 import javax.sound.midi.MidiUnavailableException;

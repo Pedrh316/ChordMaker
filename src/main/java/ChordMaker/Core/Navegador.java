@@ -1,4 +1,4 @@
-package ChordMaker;
+package ChordMaker.Core;
 
 import Controller.BibliotecaController;
 import Controller.EditorMusicaController;

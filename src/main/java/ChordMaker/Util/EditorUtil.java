@@ -1,4 +1,4 @@
-package ChordMaker;
+package ChordMaker.Util;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;

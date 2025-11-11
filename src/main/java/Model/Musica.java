@@ -1,6 +1,6 @@
 package Model;
 
-import ChordMaker.DBUtil;
+import ChordMaker.Util.DBUtil;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

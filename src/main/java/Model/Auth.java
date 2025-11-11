@@ -1,6 +1,6 @@
 package Model;
 
-import ChordMaker.DBUtil;
+import ChordMaker.Util.DBUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

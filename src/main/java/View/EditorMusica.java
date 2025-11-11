@@ -1,6 +1,6 @@
 package View;
 
-import ChordMaker.NotaUtil;
+import ChordMaker.Util.NotaUtil;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;

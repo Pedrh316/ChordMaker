@@ -1,6 +1,6 @@
 package Controller;
 
-import ChordMaker.EditorUtil;
+import ChordMaker.Util.EditorUtil;
 import Model.Musica;
 import View.EditorMusica;
 import java.awt.Color;
