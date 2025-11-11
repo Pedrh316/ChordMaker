@@ -1,5 +1,6 @@
 package Controller;
 
+import ChordMaker.ValidadorDeEmail;
 import Model.Auth;
 import Model.Biblioteca;
 import View.BibliotecaView;
@@ -8,7 +9,6 @@ import View.RegistrarView;
 
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.*;
-import java.util.regex.Pattern;
 
 public class AuthController {
 
@@ -61,19 +61,9 @@ public class AuthController {
         registrarView.dispose();
         loginView.setVisible(true);
     }
-    
-    private boolean validarEmail() {
-        var emailFormat = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+"
-                + "(?:\\.[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+)*"
-                + "@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
-
-        var pattern = Pattern.compile(emailFormat);
-        
-        return pattern.matcher(registrarView.getEmail()).matches();
-    }
 
     private void registrar() {
-        if (!validarEmail()) {
+        if (!ValidadorDeEmail.validar(registrarView.getEmail())) {
             JOptionPane.showMessageDialog(registrarView, "Email inválido");
             return;
         }

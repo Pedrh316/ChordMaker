@@ -9,7 +9,7 @@ public class RegistrarView extends javax.swing.JFrame {
     public RegistrarView() {
         initComponents();
     }
-
+    
     public String getNome() {
         return jTextField_nome.getText().trim();
     }
@@ -21,7 +21,7 @@ public class RegistrarView extends javax.swing.JFrame {
     public String getEmail() {
         return jTextField_email.getText().trim();
     }
-
+    
     public boolean getArtista() {
         return jCheckBox_artista.isSelected();
     }

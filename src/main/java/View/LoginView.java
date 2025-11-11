@@ -11,7 +11,7 @@ public class LoginView extends JFrame {
         initComponents();
     }
     
-        public String getEmail() {
+    public String getEmail() {
         return jTextField_email.getText().trim();
     }
 
