@@ -54,8 +54,10 @@ public class RegistrarView extends javax.swing.JFrame {
         jTextField_nome = new javax.swing.JTextField();
         jButton_login = new javax.swing.JButton();
         jButton_registrar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ChordMaker - Registrar");
 
         jLabel_registrar.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel_registrar.setText("Registrar");
@@ -78,49 +80,52 @@ public class RegistrarView extends javax.swing.JFrame {
         jButton_registrar.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jButton_registrar.setText("Registrar");
 
+        jLabel1.setFont(new java.awt.Font("Miriam Libre", 2, 48)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("ChordMaker");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(162, 162, 162)
-                            .addComponent(jLabel_registrar))
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jLabel_artista)
-                            .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jCheckBox_artista)
-                                    .addGap(0, 0, Short.MAX_VALUE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jButton_login)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
-                                    .addComponent(jButton_registrar)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(156, 156, 156)
+                        .addComponent(jLabel_registrar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel_artista)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel_senha)
-                                .addGap(18, 18, 18)
-                                .addComponent(jPasswordField_senha))
+                                .addComponent(jCheckBox_artista)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel_nome)
-                                    .addComponent(jLabel_email))
-                                .addGap(22, 22, 22)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField_email)
-                                    .addComponent(jTextField_nome))))))
+                                .addComponent(jButton_login)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
+                                .addComponent(jButton_registrar))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel_senha)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPasswordField_senha))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel_nome)
+                            .addComponent(jLabel_email))
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField_email)
+                            .addComponent(jTextField_nome)))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                .addGap(2, 2, 2)
                 .addComponent(jLabel_registrar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -142,7 +147,7 @@ public class RegistrarView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton_login)
                     .addComponent(jButton_registrar))
-                .addContainerGap(133, Short.MAX_VALUE))
+                .addGap(32, 32, 32))
         );
 
         pack();
@@ -177,6 +182,7 @@ public class RegistrarView extends javax.swing.JFrame {
     private javax.swing.JButton jButton_login;
     private javax.swing.JButton jButton_registrar;
     private javax.swing.JCheckBox jCheckBox_artista;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel_artista;
     private javax.swing.JLabel jLabel_email;
     private javax.swing.JLabel jLabel_nome;

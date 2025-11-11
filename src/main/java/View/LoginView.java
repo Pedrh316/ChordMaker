@@ -46,8 +46,10 @@ public class LoginView extends JFrame {
         jPasswordField_senha = new javax.swing.JPasswordField();
         jButton_registrar = new javax.swing.JButton();
         jButton_login = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ChordMaker - Login");
 
         jLabel_login.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel_login.setText("Login");
@@ -64,16 +66,19 @@ public class LoginView extends JFrame {
         jButton_login.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jButton_login.setText("Login");
 
+        jLabel1.setFont(new java.awt.Font("Miriam Libre", 2, 48)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("ChordMaker");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(189, Short.MAX_VALUE)
                 .addComponent(jLabel_login)
-                .addGap(173, 173, 173))
+                .addGap(167, 167, 167))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel_email)
                     .addComponent(jLabel_senha))
@@ -81,16 +86,21 @@ public class LoginView extends JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton_registrar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
                         .addComponent(jButton_login))
                     .addComponent(jTextField_email)
-                    .addComponent(jPasswordField_senha))
+                    .addComponent(jPasswordField_senha)))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel_login)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -104,7 +114,7 @@ public class LoginView extends JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton_registrar)
                     .addComponent(jButton_login))
-                .addContainerGap(162, Short.MAX_VALUE))
+                .addGap(57, 57, 57))
         );
 
         pack();
@@ -138,6 +148,7 @@ public class LoginView extends JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_login;
     private javax.swing.JButton jButton_registrar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel_email;
     private javax.swing.JLabel jLabel_login;
     private javax.swing.JLabel jLabel_senha;

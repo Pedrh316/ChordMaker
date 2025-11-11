@@ -111,6 +111,7 @@ public class BibliotecaView extends javax.swing.JFrame {
         jButton_atualizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ChordMaker - Biblioteca");
         setPreferredSize(new java.awt.Dimension(900, 600));
 
         javax.swing.GroupLayout jPanel_bibliotecaLayout = new javax.swing.GroupLayout(jPanel_biblioteca);
@@ -128,7 +129,7 @@ public class BibliotecaView extends javax.swing.JFrame {
 
         jButton_adicionar.setText("➕");
 
-        jLabel_bibliotecaTitulo.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jLabel_bibliotecaTitulo.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
         jLabel_bibliotecaTitulo.setText("Biblioteca");
 
         jButton_stop.setText("⏹");

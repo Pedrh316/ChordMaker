@@ -2,8 +2,6 @@ package Model;
 
 import ChordMaker.DBUtil;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Usuario {
@@ -12,7 +10,6 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
-    private final List<Playlist> playlists = new ArrayList<>();
 
     public Usuario(int id, String nome, String email, String senha) {
         this.id = id;
@@ -52,28 +49,6 @@ public class Usuario {
 
     public int getId() {
         return id;
-    }
-
-    public void criarPlaylist(String nomePlaylist, List<Musica> musicas) {
-        var playlist = new Playlist(nomePlaylist);
-
-        playlist.addMusicaPlaylist(musicas);
-
-        playlists.add(playlist);
-    }
-
-    public void criarPlaylist(String nomePlaylist) {
-        var playlist = new Playlist(nomePlaylist);
-
-        playlists.add(playlist);
-    }
-
-    public void criarPlaylist(String nomePlaylist, Musica musica) {
-        var playlist = new Playlist(nomePlaylist);
-
-        playlist.addMusicaPlaylist(musica);
-
-        playlists.add(playlist);
     }
 
     public static void criarTable() {

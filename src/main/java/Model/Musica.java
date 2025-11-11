@@ -17,7 +17,6 @@ public class Musica {
     private String titulo;
     private String genero;
     private Date dataLancamento;
-    private Album album;
     private Artista artista;
 
     public Musica(int id, Artista artista, Sequence faixa) {
@@ -66,14 +65,6 @@ public class Musica {
 
     public void setDataLancamento(Date dataLancamento) {
         this.dataLancamento = dataLancamento;
-    }
-
-    public Album getAlbum() {
-        return album;
-    }
-
-    public void setAlbum(Album album) {
-        this.album = album;
     }
 
     public Artista getArtista() {

@@ -234,6 +234,7 @@ public class EditorMusica extends JFrame {
         jLabel_titulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("ChordMaker - Editando");
 
         jButton_play.setText("▶");
 

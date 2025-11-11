@@ -69,7 +69,7 @@ public class EditorMusicaController {
 
         view.setSequence(model.getFaixa());
 
-        view.setBotaoPlay((var e) -> {
+        view.setBotaoPlay(e -> {
             new Thread(() -> {
                 try {
                     if (!sequencer.isOpen()) {
