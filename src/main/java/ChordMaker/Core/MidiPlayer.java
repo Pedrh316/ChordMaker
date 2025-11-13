@@ -1,8 +1,5 @@
 package ChordMaker.Core;
 
-import java.awt.event.ActionListener;
-import java.util.concurrent.Callable;
-import java.util.function.Function;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -12,6 +9,11 @@ import javax.sound.midi.Sequencer;
 public class MidiPlayer {
     private final Sequencer sequencer;
 
+    public MidiPlayer(Sequencer seq) throws MidiUnavailableException {
+        this.sequencer = seq;
+        this.sequencer.open();
+    }
+    
     public MidiPlayer() throws MidiUnavailableException {
         this.sequencer = MidiSystem.getSequencer();
         this.sequencer.open();

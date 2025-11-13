@@ -53,8 +53,6 @@ public class Biblioteca {
                     + "FROM musica "
                     + "ORDER BY titulo";
             
-            var musicas = new ArrayList<Musica>();
-            
             var conn = DBUtil.getConnection();
             var stmt = conn.prepareStatement(sql);
             

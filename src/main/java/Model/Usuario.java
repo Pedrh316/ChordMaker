@@ -87,10 +87,8 @@ public class Usuario {
             return false;
         }
         
-        if (obj instanceof Usuario) {
-            final Usuario other = (Usuario) obj;
-            
-            return this.id == other.id;
+        if (obj instanceof Usuario usuario) {            
+            return this.id == usuario.id;
         }
         
         
